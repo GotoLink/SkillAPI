@@ -21,25 +21,23 @@ public class SkillPacketHandler implements IPacketHandler{
 	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
 		SkillPacket skpacket = null;
-		switch(packet.channel){
-		case CHANNEL0:
+		if(packet.channel.equals(CHANNEL0)){
 			skpacket = new InitSkillPacket();
-			break;
-		case CHANNEL1:
+		}
+		else if(packet.channel.equals(CHANNEL1)){
 			skpacket = new LearnSkillPacket();
-			break;
-		case CHANNEL2:
+		}
+		else if(packet.channel.equals(CHANNEL2)){
 			skpacket = new UpdateSkillPacket();
-			break;
-		case CHANNEL3:
+		}
+		else if(packet.channel.equals(CHANNEL3)){
 			skpacket = new TriggerSkillPacket();
-			break;
-		case CHANNEL4:
+		}
+		else if(packet.channel.equals(CHANNEL4)){
 			skpacket = new ActiveSkillPacket();
-			break;
-		case CHANNEL5:
+		}
+		else if(packet.channel.equals(CHANNEL5)){
 			skpacket = new TickDataSkillPacket();
-			break;
 		}
 		if(skpacket!=null){
 			try {
