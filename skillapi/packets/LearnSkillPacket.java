@@ -43,7 +43,7 @@ public class LearnSkillPacket extends SkillPacket{
 	void run(EntityPlayer player) {
 		if(player.entityId == id && (SkillRegistry.isSkillRegistered(skill)||skill==null)){
 			PlayerSkills.get(player).skillJustLearnt = SkillRegistry.get(skill);
-			if(skill!=null){
+			if(skill!=null && !SkillRegistry.isSkillKnown(player, skill)){
 				PlayerSkills.get(player).knownSkills.add(skill);
 			}
 		}
