@@ -4,8 +4,7 @@ import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-public class SkillHealingBreeze extends SkillGeneric{
-
+public class SkillHealingBreeze extends SkillGeneric {
 	private Random rand = new Random();
 
 	@Override
@@ -35,14 +34,14 @@ public class SkillHealingBreeze extends SkillGeneric{
 
 	@Override
 	public boolean onSkillTrigger(EntityPlayer player) {
-		if(player.getHealth()<4)
+		if (player.getHealth() < 4)
 			player.heal(4);
 		return true;
 	}
 
 	@Override
 	public void onTickWhileActive(EntityPlayer player) {
-		if(player.getHealth()<20 && rand.nextFloat()>0.9)
+		if (player.getHealth() < 20 && rand.nextFloat() > 0.9)
 			player.heal(1);
 	}
 }

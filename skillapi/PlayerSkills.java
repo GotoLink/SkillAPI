@@ -15,7 +15,6 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 
 public class PlayerSkills implements IExtendedEntityProperties {
-	
 	public List<String> knownSkills = new ArrayList();
 	public List<String> activeSkills = new LinkedList();
 	public Skill[] skillBar = new Skill[5];
@@ -23,38 +22,38 @@ public class PlayerSkills implements IExtendedEntityProperties {
 	public Skill chargingSkill;
 	private int mana, prevMana;
 	private EntityPlayer player;
-	
+
 	public PlayerSkills(EntityPlayer player, int mana) {
 		this.player = player;
 		this.mana = this.prevMana = mana;
 	}
 
-	public int getMana(){
+	public int getMana() {
 		return mana;
 	}
-	
-	public void setMana(int mana){
+
+	public void setMana(int mana) {
 		this.mana = mana;
 	}
-	
+
 	public int getPrevMana() {
 		return prevMana;
 	}
-	
-	public void setPrevMana(int mana){
+
+	public void setPrevMana(int mana) {
 		this.prevMana = mana;
 	}
-	
+
 	public EntityPlayer getPlayer() {
 		return player;
 	}
-	
+
 	public void spendMana(int amount) {
 		mana -= amount;
 		if (mana < 0)
 			mana = 0;
 	}
-	
+
 	public void restoreMana(int amount) {
 		if (player.getHealth() <= 0)
 			return;
@@ -62,17 +61,17 @@ public class PlayerSkills implements IExtendedEntityProperties {
 		if (mana > 20)
 			mana = 20;
 	}
-	
+
 	public void skillGet(Skill skill) {
-		player.worldObj.playSoundAtEntity(player,"note.snare", 0.2F, 1.0F);
+		player.worldObj.playSoundAtEntity(player, "note.snare", 0.2F, 1.0F);
 		skillJustLearnt = skill;
-		PacketDispatcher.sendPacketToPlayer(new LearnSkillPacket(player.entityId,skill.getName()).getPacket(), (Player) player);
+		PacketDispatcher.sendPacketToPlayer(new LearnSkillPacket(player.entityId, skill.getName()).getPacket(), (Player) player);
 	}
 
 	public boolean chargeSkill(Skill skill) {
-		if(chargingSkill!=null) {
+		if (chargingSkill != null) {
 			cancelCharge();
-			chargingSkill=null;
+			chargingSkill = null;
 			player.worldObj.playSoundAtEntity(player, "note.bass", 1.0F, 0F);
 			return false;
 		}
@@ -80,22 +79,23 @@ public class PlayerSkills implements IExtendedEntityProperties {
 		startCharge();
 		return true;
 	}
-	
-	public void startCharge(){
+
+	public void startCharge() {
 		chargingSkill.charge = 1;
-		if(!player.worldObj.isRemote){;
+		if (!player.worldObj.isRemote) {
+			;
 			int[] data = SkillTickHandler.getData(player, chargingSkill);
-			data[0]=1;
+			data[0] = 1;
 			SkillTickHandler.get(player).put(chargingSkill.getName(), data);
 		}
 	}
-	
+
 	public void cancelCharge() {
-		if(chargingSkill!=null) {
+		if (chargingSkill != null) {
 			chargingSkill.charge = 0;
-			if(!player.worldObj.isRemote){
+			if (!player.worldObj.isRemote) {
 				int[] data = SkillTickHandler.getData(player, chargingSkill);
-				data[0]=0;
+				data[0] = 0;
 				SkillTickHandler.get(player).put(chargingSkill.getName(), data);
 			}
 		}
@@ -103,61 +103,60 @@ public class PlayerSkills implements IExtendedEntityProperties {
 
 	public void resetSkills() {
 		cancelCharge();
-		if(!player.worldObj.isRemote){
-			Map<String,int[]> map = SkillTickHandler.get(player);
+		if (!player.worldObj.isRemote) {
+			Map<String, int[]> map = SkillTickHandler.get(player);
 			for (String skill : activeSkills) {
 				int[] data = map.get(skill);
-				data[2]=0;
+				data[2] = 0;
 				map.put(skill, data);
 			}
-			for (Skill skill : skillBar){
-				if(skill!=null && skill.cooldownFrame>=1){
+			for (Skill skill : skillBar) {
+				if (skill != null && skill.cooldownFrame >= 1) {
 					int[] data = map.get(skill.getName());
-					data[0]=0;
+					data[0] = 0;
 					map.put(skill.getName(), data);
 				}
 			}
 		}
-		chargingSkill=null;
+		chargingSkill = null;
 		activeSkills.clear();
-		for (Skill skill : skillBar){
-			if(skill!=null && skill.cooldownFrame>=1){
-				skill.cooldownFrame=0;
+		for (Skill skill : skillBar) {
+			if (skill != null && skill.cooldownFrame >= 1) {
+				skill.cooldownFrame = 0;
 			}
 		}
 	}
-	
+
 	@Override
 	public void saveNBTData(NBTTagCompound compound) {
-		for (int i=0;i<knownSkills.size(); i++)
-			compound.setString("KnownSkill"+i, knownSkills.get(i));
-		for (int i=0;i<skillBar.length; i++)
-			if(skillBar[i]!=null)
-				compound.setString("SkillBarSlot"+i, skillBar[i].getName());
+		for (int i = 0; i < knownSkills.size(); i++)
+			compound.setString("KnownSkill" + i, knownSkills.get(i));
+		for (int i = 0; i < skillBar.length; i++)
+			if (skillBar[i] != null)
+				compound.setString("SkillBarSlot" + i, skillBar[i].getName());
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound compound) {
-		int i=0;
+		int i = 0;
 		String skillName;
-		while(true) {
-			skillName = compound.getString("KnownSkill"+(i++));
-			if(skillName.equals(""))
+		while (true) {
+			skillName = compound.getString("KnownSkill" + (i++));
+			if (skillName.equals(""))
 				break;
-			if(SkillRegistry.get(skillName)!=null)
+			if (SkillRegistry.get(skillName) != null)
 				knownSkills.add(skillName);
 		}
-		for (int j=0;j<skillBar.length; j++)
-			if(!(skillName=compound.getString("SkillBarSlot"+j)).equals(""))
+		for (int j = 0; j < skillBar.length; j++)
+			if (!(skillName = compound.getString("SkillBarSlot" + j)).equals(""))
 				skillBar[j] = SkillRegistry.get(skillName);
 	}
 
 	@Override
 	public void init(Entity entity, World world) {
-		
 	}
-	
-	public static PlayerSkills get(EntityPlayer player){
+
+	public static PlayerSkills get(EntityPlayer player) {
 		return (PlayerSkills) player.getExtendedProperties("SKILLAPI");
 	}
 }

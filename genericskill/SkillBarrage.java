@@ -8,8 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class SkillBarrage extends SkillGeneric{
-
+public class SkillBarrage extends SkillGeneric {
 	Random rand = new Random();
 
 	@Override
@@ -34,26 +33,24 @@ public class SkillBarrage extends SkillGeneric{
 
 	@Override
 	public boolean canPlayerUseSkill(EntityPlayer player) {
-		int arrowCount=0;
+		int arrowCount = 0;
 		ItemStack[] playerInv = player.inventory.mainInventory;
-		for(int slot=0;slot<playerInv.length;slot++)
-            if(playerInv[slot] != null && playerInv[slot].itemID == Item.arrow.itemID)
-                arrowCount+=playerInv[slot].stackSize;
-		return arrowCount>1;
+		for (int slot = 0; slot < playerInv.length; slot++)
+			if (playerInv[slot] != null && playerInv[slot].itemID == Item.arrow.itemID)
+				arrowCount += playerInv[slot].stackSize;
+		return arrowCount > 1;
 	}
 
 	@Override
 	public boolean onSkillTrigger(EntityPlayer player) {
-		if(!canPlayerUseSkill(player)) //Check again just in case the player threw his arrows away while charging.
+		if (!canPlayerUseSkill(player)) //Check again just in case the player threw his arrows away while charging.
 			return false;
-
 		World world = player.worldObj;
-		float shotStrength = (player.experienceLevel+1)/1.7F;
-		world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F/(rand.nextFloat() * 0.4F + 1.2F)+0.5F);
-		
-		for (int i=0;i<5;i++)
-			if(player.inventory.consumeInventoryItem(Item.arrow.itemID) && !world.isRemote)		
-				world.spawnEntityInWorld(new EntityArrow(world, player, shotStrength-(rand.nextFloat()*rand.nextFloat()*rand.nextFloat())));
+		float shotStrength = (player.experienceLevel + 1) / 1.7F;
+		world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
+		for (int i = 0; i < 5; i++)
+			if (player.inventory.consumeInventoryItem(Item.arrow.itemID) && !world.isRemote)
+				world.spawnEntityInWorld(new EntityArrow(world, player, shotStrength - (rand.nextFloat() * rand.nextFloat() * rand.nextFloat())));
 		return true;
 	}
 }

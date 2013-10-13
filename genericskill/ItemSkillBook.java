@@ -10,11 +10,12 @@ import net.minecraft.world.World;
 import skillapi.SkillRegistry;
 
 public class ItemSkillBook extends Item {
-	
 	private Collection<String> skills = new ArrayList<String>();
+
 	/**
-	 * Generic item with already set unlocalized name and texture
-	 * Can teach skills on player right click
+	 * Generic item with already set unlocalized name and texture Can teach
+	 * skills on player right click
+	 * 
 	 * @param i
 	 */
 	public ItemSkillBook(int i) {
@@ -23,22 +24,26 @@ public class ItemSkillBook extends Item {
 		setTextureName("genericskill:genskillbook");
 		setMaxStackSize(1);
 	}
+
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player) {
-		int learnt=0;
+		int learnt = 0;
 		for (String skillName : skills)
-			learnt += SkillRegistry.learnSkill(player, skillName)?1:0;
-		if(learnt>0)
+			learnt += SkillRegistry.learnSkill(player, skillName) ? 1 : 0;
+		if (learnt > 0)
 			itemstack.stackSize--;
 		return itemstack;
 	}
+
 	/**
 	 * Utility method to add skills to the book
-	 * @param skillNames to add to the book, case sensitive
+	 * 
+	 * @param skillNames
+	 *            to add to the book, case sensitive
 	 * @return the book, for chaining convenience
 	 */
 	public ItemSkillBook addSkills(String... skillNames) {
-		for(String skill:skillNames)
+		for (String skill : skillNames)
 			skills.add(skill);
 		return this;
 	}

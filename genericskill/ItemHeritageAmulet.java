@@ -7,17 +7,16 @@ import net.minecraft.world.World;
 import skillapi.SkillRegistry;
 
 public class ItemHeritageAmulet extends Item {
-
 	public ItemHeritageAmulet(int i) {
 		super(i);
 		setUnlocalizedName("heritageAmulet");
 		setTextureName("genericskill:heritageAmulet");
 		setMaxStackSize(1);
 	}
+
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player) {
-		SkillRegistry.triggerSkill(player,"Binding Signet");
+		SkillRegistry.triggerSkill(player, "Binding Signet");
 		return itemstack;
 	}
-
 }

@@ -13,8 +13,7 @@ import skillapi.PlayerSkills;
 import skillapi.Skill;
 import skillapi.SkillRegistry;
 
-public class InitSkillPacket extends SkillPacket{
-
+public class InitSkillPacket extends SkillPacket {
 	private int id;
 	private int mana;
 	private List<String> known = new ArrayList();
@@ -22,7 +21,9 @@ public class InitSkillPacket extends SkillPacket{
 	private Skill[] bar = new Skill[5];
 	private List<Integer> pos = new ArrayList();
 
-	public InitSkillPacket(){}
+	public InitSkillPacket() {
+	}
+
 	public InitSkillPacket(PlayerSkills skills) {
 		this.id = skills.getPlayer().entityId;
 		this.mana = skills.getMana();
@@ -30,6 +31,7 @@ public class InitSkillPacket extends SkillPacket{
 		this.active = skills.activeSkills;
 		this.bar = skills.skillBar;
 	}
+
 	@Override
 	String getChannel() {
 		return SkillPacketHandler.CHANNEL0;
@@ -40,19 +42,19 @@ public class InitSkillPacket extends SkillPacket{
 		out.writeInt(id);
 		out.writeInt(mana);
 		out.writeInt(known.size());
-		if(known.size()>0){
-			for(String skill:known){
+		if (known.size() > 0) {
+			for (String skill : known) {
 				out.writeUTF(skill);
 			}
 		}
 		out.writeInt(active.size());
-		if(active.size()>0){
-			for(String skill:active){
+		if (active.size() > 0) {
+			for (String skill : active) {
 				out.writeUTF(skill);
 			}
 		}
-		for(int i =0;i<bar.length;i++){
-			if(bar[i]!=null){
+		for (int i = 0; i < bar.length; i++) {
+			if (bar[i] != null) {
 				out.writeInt(i);
 				out.writeUTF(bar[i].getName());
 			}
@@ -64,22 +66,22 @@ public class InitSkillPacket extends SkillPacket{
 		id = in.readInt();
 		mana = in.readInt();
 		int size = in.readInt();
-		if(size>0){
-			for(int i=0; i<size; i++){
+		if (size > 0) {
+			for (int i = 0; i < size; i++) {
 				known.add(in.readUTF());
 			}
 		}
 		size = in.readInt();
-		if(size>0){
-			for(int i=0; i<size; i++){
+		if (size > 0) {
+			for (int i = 0; i < size; i++) {
 				active.add(in.readUTF());
 			}
 		}
-		while(true){
-			try{
+		while (true) {
+			try {
 				pos.add(in.readInt());
-				bar[pos.get(pos.size()-1)] = SkillRegistry.get(in.readUTF());
-			}catch(EOFException e){
+				bar[pos.get(pos.size() - 1)] = SkillRegistry.get(in.readUTF());
+			} catch (EOFException e) {
 				break;
 			}
 		}
@@ -87,18 +89,18 @@ public class InitSkillPacket extends SkillPacket{
 
 	@Override
 	void run(EntityPlayer player) {
-		if(player.entityId == id){
+		if (player.entityId == id) {
 			PlayerSkills skills = PlayerSkills.get(player);
 			skills.setMana(mana);
 			skills.knownSkills.clear();
-			for(String sk:known){
+			for (String sk : known) {
 				skills.knownSkills.add(sk);
 			}
 			skills.activeSkills.clear();
-			for(String sk:active){
+			for (String sk : active) {
 				skills.activeSkills.add(sk);
 			}
-			for(int i:pos){
+			for (int i : pos) {
 				skills.skillBar[i] = bar[i];
 			}
 		}

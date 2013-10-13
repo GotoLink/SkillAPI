@@ -8,15 +8,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import skillapi.PlayerSkills;
 import skillapi.SkillRegistry;
 
-public class ActiveSkillPacket extends LearnSkillPacket{
-
+public class ActiveSkillPacket extends LearnSkillPacket {
 	private boolean active;
 
-	public ActiveSkillPacket(){}
-	public ActiveSkillPacket(int id, String skill, boolean active){
-		super(id,skill);
+	public ActiveSkillPacket() {
+	}
+
+	public ActiveSkillPacket(int id, String skill, boolean active) {
+		super(id, skill);
 		this.active = active;
 	}
+
 	@Override
 	String getChannel() {
 		return SkillPacketHandler.CHANNEL4;
@@ -36,13 +38,12 @@ public class ActiveSkillPacket extends LearnSkillPacket{
 
 	@Override
 	void run(EntityPlayer player) {
-		if(player.entityId == id && SkillRegistry.isSkillRegistered(skill)){
-			if(active){
+		if (player.entityId == id && SkillRegistry.isSkillRegistered(skill)) {
+			if (active) {
 				PlayerSkills.get(player).activeSkills.add(skill);
-			}else{
+			} else {
 				PlayerSkills.get(player).activeSkills.remove(skill);
 			}
 		}
 	}
-
 }

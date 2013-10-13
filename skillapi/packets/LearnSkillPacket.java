@@ -9,16 +9,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import skillapi.PlayerSkills;
 import skillapi.SkillRegistry;
 
-public class LearnSkillPacket extends SkillPacket{
-
+public class LearnSkillPacket extends SkillPacket {
 	protected int id;
 	protected String skill;
 
-	public LearnSkillPacket(){}
-	public LearnSkillPacket(int id, String skill){
+	public LearnSkillPacket() {
+	}
+
+	public LearnSkillPacket(int id, String skill) {
 		this.id = id;
 		this.skill = skill;
 	}
+
 	@Override
 	String getChannel() {
 		return SkillPacketHandler.CHANNEL1;
@@ -27,23 +29,24 @@ public class LearnSkillPacket extends SkillPacket{
 	@Override
 	void write(DataOutput out) throws IOException {
 		out.writeInt(id);
-		if(skill!=null)
+		if (skill != null)
 			out.writeUTF(skill);
 	}
 
 	@Override
 	void read(DataInput in) throws IOException {
 		id = in.readInt();
-		try{
+		try {
 			skill = in.readUTF();
-		}catch(EOFException e){}
+		} catch (EOFException e) {
+		}
 	}
 
 	@Override
 	void run(EntityPlayer player) {
-		if(player.entityId == id && (SkillRegistry.isSkillRegistered(skill)||skill==null)){
+		if (player.entityId == id && (SkillRegistry.isSkillRegistered(skill) || skill == null)) {
 			PlayerSkills.get(player).skillJustLearnt = SkillRegistry.get(skill);
-			if(skill!=null && !SkillRegistry.isSkillKnown(player, skill)){
+			if (skill != null && !SkillRegistry.isSkillKnown(player, skill)) {
 				PlayerSkills.get(player).knownSkills.add(skill);
 			}
 		}

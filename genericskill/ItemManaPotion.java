@@ -7,7 +7,6 @@ import net.minecraft.world.World;
 import skillapi.PlayerSkills;
 
 public class ItemManaPotion extends Item {
-
 	private int restoreAmount;
 
 	/* Items can use mana too! */
@@ -18,6 +17,7 @@ public class ItemManaPotion extends Item {
 		setMaxStackSize(16);
 		this.restoreAmount = restoreAmount;
 	}
+
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player) {
 		PlayerSkills sk = PlayerSkills.get(player);

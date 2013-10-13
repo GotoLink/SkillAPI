@@ -9,13 +9,14 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import skillapi.PlayerSkills;
 import skillapi.SkillRegistry;
 
-public class UpdateSkillPacket extends LearnSkillPacket{
-	
+public class UpdateSkillPacket extends LearnSkillPacket {
 	protected int num;
 
-	public UpdateSkillPacket(){}
-	public UpdateSkillPacket(int id, int num, String skill){
-		super(id,skill);
+	public UpdateSkillPacket() {
+	}
+
+	public UpdateSkillPacket(int id, int num, String skill) {
+		super(id, skill);
 		this.num = num;
 	}
 
@@ -38,14 +39,14 @@ public class UpdateSkillPacket extends LearnSkillPacket{
 
 	@Override
 	void run(EntityPlayer player) {
-		if(player.entityId == id && (SkillRegistry.isSkillKnown(player, skill) || skill==null)){//Valid update packet
-			if(num>=0){
+		if (player.entityId == id && (SkillRegistry.isSkillKnown(player, skill) || skill == null)) {//Valid update packet
+			if (num >= 0) {
 				PlayerSkills.get(player).skillBar[num] = SkillRegistry.get(skill);
-			}else{
+			} else {
 				PlayerSkills.get(player).chargingSkill = SkillRegistry.get(skill);
 			}
-			if(player instanceof EntityPlayerMP){//Send back checked info to client
-				((EntityPlayerMP)player).playerNetServerHandler.sendPacketToPlayer(getPacket());
+			if (player instanceof EntityPlayerMP) {//Send back checked info to client
+				((EntityPlayerMP) player).playerNetServerHandler.sendPacketToPlayer(getPacket());
 			}
 		}
 	}

@@ -7,13 +7,10 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 public class SkillAPIProxy {
-
 	public void loadSkillKeyBindings() {
-		
 	}
 
 	public void updateKeyBindingTypes(EntityPlayer player) {
-		
 	}
 
 	public void register() {
@@ -22,5 +19,4 @@ public class SkillAPIProxy {
 		MinecraftForge.EVENT_BUS.register(playerEvent);
 		GameRegistry.registerPlayerTracker(playerEvent);
 	}
-
 }
