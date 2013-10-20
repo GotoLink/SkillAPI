@@ -6,13 +6,8 @@ import net.minecraft.item.Item;
 
 public class SkillSummonWolf extends SkillGeneric {
 	@Override
-	public String getDescription() {
-		return "Injects your life force\ninto a bone thereby summoning\na trusty canine companion.\n(requires a bone)";
-	}
-
-	@Override
-	public int getManaCost(EntityPlayer player) {
-		return 10;
+	public boolean canPlayerUseSkill(EntityPlayer player) {
+		return player.inventory.hasItem(Item.bone.itemID);
 	}
 
 	@Override
@@ -26,8 +21,13 @@ public class SkillSummonWolf extends SkillGeneric {
 	}
 
 	@Override
-	public boolean canPlayerUseSkill(EntityPlayer player) {
-		return player.inventory.hasItem(Item.bone.itemID);
+	public String getDescription() {
+		return "Injects your life force\ninto a bone thereby summoning\na trusty canine companion.\n(requires a bone)";
+	}
+
+	@Override
+	public int getManaCost(EntityPlayer player) {
+		return 10;
 	}
 
 	@Override
@@ -39,14 +39,16 @@ public class SkillSummonWolf extends SkillGeneric {
 		EntityWolf wolf = new EntityWolf(player.worldObj);
 		wolf.setLocationAndAngles(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
 		wolf.spawnExplosionParticle();
-		wolf.setTamed(true);
-		wolf.setPathToEntity(null);
-		wolf.setSitting(false);
-		wolf.setHealth(20);
-		wolf.setOwner(player.username);
-		player.worldObj.setEntityState(wolf, (byte) 7);
-		if (!player.worldObj.isRemote)
+		if (!player.worldObj.isRemote) {
+			wolf.setTamed(true);
+			wolf.setPathToEntity(null);
+			wolf.setAttackTarget(null);
+			wolf.setSitting(false);
+			wolf.setHealth(20);
+			wolf.setOwner(player.getCommandSenderName());
+			player.worldObj.setEntityState(wolf, (byte) 7);
 			player.worldObj.spawnEntityInWorld(wolf);
+		}
 		return true;
 	}
 }
