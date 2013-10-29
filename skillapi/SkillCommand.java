@@ -9,13 +9,21 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 public class SkillCommand extends CommandGive {
 	@Override
+	public List addTabCompletionOptions(ICommandSender sender, String[] command) {
+		if (command.length == 2) {
+			return getListOfStringsMatchingLastWord(command, (String[]) SkillRegistry.getSkillMap().keySet().toArray());
+		}
+		return super.addTabCompletionOptions(sender, command);
+	}
+
+	@Override
 	public String getCommandName() {
 		return "teach";
 	}
 
 	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
-		return getCommandName() + "<username> <skill>";
+		return "commands.teach.usage";
 	}
 
 	@Override
@@ -29,13 +37,5 @@ public class SkillCommand extends CommandGive {
 		} else {
 			throw new WrongUsageException(getCommandUsage(sender), new Object[0]);
 		}
-	}
-
-	@Override
-	public List addTabCompletionOptions(ICommandSender sender, String[] command) {
-		if (command.length == 2) {
-			return getListOfStringsMatchingLastWord(command, (String[]) SkillRegistry.getSkillMap().keySet().toArray());
-		}
-		return super.addTabCompletionOptions(sender, command);
 	}
 }

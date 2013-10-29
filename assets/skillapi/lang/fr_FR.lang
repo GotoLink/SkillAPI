@@ -1,6 +1,9 @@
-﻿key.skillGui=Skill GUI
+﻿
+key.skillGui=Skill GUI
 key.skill1=Skill 1
 key.skill2=Skill 2
 key.skill3=Skill 3
 key.skill4=Skill 4
 key.skill5=Skill 5
+
+commands.teach.usage=/teach <joueur> <skill>

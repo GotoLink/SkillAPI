@@ -1,5 +1,6 @@
 package genericskill;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
@@ -11,7 +12,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @Mod(modid = "genericskills", name = "Generic Skills Pack", version = "0.1", dependencies = "required-after:skillapi")
 @NetworkMod(clientSideRequired = true)
@@ -41,18 +43,21 @@ public class GenericSkills {
 		SkillRegistry.registerSkill(new SkillBindingSignet().setName(skills[5]).setTexture("bindingsignet"));
 		SkillRegistry.registerSkill(new SkillUnrelentingForce().setName(skills[6]).setTexture("unrelentingforce"));
 		SkillRegistry.registerSkill(new SkillBarrage().setName(skills[7]).setTexture(skills[7].toLowerCase()));
-		SkillCreativeTab customTab = new SkillCreativeTab();
+		CreativeTabs customTab = new CreativeTabs("GenericSkillPack") {
+			@Override
+			@SideOnly(Side.CLIENT)
+			public Item getTabIconItem() {
+				return GenericSkills.heritageAmulet;
+			}
+		};
 		genSkillBook = new ItemSkillBook(skillBookId).addSkills(skills).setCreativeTab(customTab);
-		LanguageRegistry.addName(genSkillBook, "Generic Skill Book");
 		GameRegistry.addShapelessRecipe(new ItemStack(genSkillBook), new Object[] { Item.ingotGold, Item.book });
 		GameRegistry.registerItem(genSkillBook, "Generic Skill Book");
 		heritageAmulet = new ItemHeritageAmulet(heritageAmuletId).setCreativeTab(customTab);
-		LanguageRegistry.addName(heritageAmulet, "Heritage Amulet");
 		GameRegistry.addRecipe(new ItemStack(heritageAmulet), new Object[] { " S ", "S S", "GDG", Character.valueOf('S'), Item.silk, Character.valueOf('G'), Item.ingotGold, Character.valueOf('D'),
-			Item.diamond });
+				Item.diamond });
 		GameRegistry.registerItem(heritageAmulet, "Heritage Amulet");
 		manaPotion = (new ItemManaPotion(manaPotionId, 5)).setCreativeTab(customTab);
-		LanguageRegistry.addName(manaPotion, "Mana Potion");
 		GameRegistry.addShapelessRecipe(new ItemStack(manaPotion), new Object[] { Item.glassBottle, new ItemStack(Item.dyePowder, 1, 4) });
 		GameRegistry.registerItem(manaPotion, "Mana Potion");
 		EntityRegistry.registerModEntity(EntityShockWave.class, "FusRoDah", 0, this, 20, 4, true);
