@@ -16,10 +16,10 @@ import skillapi.SkillRegistry;
 public class InitSkillPacket extends SkillPacket {
 	private int id;
 	private int mana;
-	private List<String> known = new ArrayList();
-	private List<String> active = new LinkedList();
+	private List<String> known = new ArrayList<String>();
+	private List<String> active = new LinkedList<String>();
 	private Skill[] bar = new Skill[5];
-	private List<Integer> pos = new ArrayList();
+	private List<Integer> pos = new ArrayList<Integer>();
 
 	public InitSkillPacket() {
 	}

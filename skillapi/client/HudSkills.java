@@ -100,7 +100,7 @@ public class HudSkills {
 			return;
 		int xOffset;
 		Skill skill;
-		Iterator itr = player.activeSkills.iterator();
+		Iterator<String> itr = player.activeSkills.iterator();
 		for (int i = 0; i < player.activeSkills.size(); i++) {
 			xOffset = ((scaledWidth - 22 - ((player.activeSkills.size() - 1) * 22)) / 2) + (22 * i);
 			skill = SkillRegistry.get((String) itr.next());

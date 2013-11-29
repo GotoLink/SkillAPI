@@ -15,7 +15,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 
 public class SkillTickHandler implements IScheduledTickHandler {
-	public static Map<String, Map<String, int[]>> timers = new ConcurrentHashMap();//username->skill->charge, cooldown, duration timers
+	public static Map<String, Map<String, int[]>> timers = new ConcurrentHashMap<String, Map<String, int[]>>();//username->skill->charge, cooldown, duration timers
 	public final static int mult = 10;
 
 	@Override
@@ -92,7 +92,7 @@ public class SkillTickHandler implements IScheduledTickHandler {
 
 	public static Map<String, int[]> get(EntityPlayer player) {
 		if (!timers.containsKey(player.username))
-			timers.put(player.username, new HashMap());
+			timers.put(player.username, new HashMap<String, int[]>());
 		return timers.get(player.username);
 	}
 

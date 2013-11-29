@@ -18,8 +18,8 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 
 public class PlayerEventHandler implements IPlayerTracker {
-	public Map<String, List<String>> knownSkillsBackup = new HashMap();
-	public Map<String, Skill[]> skillBarBackup = new HashMap();
+	public Map<String, List<String>> knownSkillsBackup = new HashMap<String, List<String>>();
+	public Map<String, Skill[]> skillBarBackup = new HashMap<String, Skill[]>();
 
 	@ForgeSubscribe
 	public void onConstructing(EntityConstructing event) {
