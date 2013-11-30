@@ -11,6 +11,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import skillapi.PlayerSkills;
 import skillapi.Skill;
+import skillapi.SkillAPI;
 import skillapi.SkillRegistry;
 
 public class InitSkillPacket extends SkillPacket {
@@ -19,7 +20,6 @@ public class InitSkillPacket extends SkillPacket {
 	private List<String> known = new ArrayList<String>();
 	private List<String> active = new LinkedList<String>();
 	private Skill[] bar = new Skill[5];
-	private List<Integer> pos = new ArrayList<Integer>();
 
 	public InitSkillPacket() {
 	}
@@ -79,8 +79,8 @@ public class InitSkillPacket extends SkillPacket {
 		}
 		while (true) {
 			try {
-				pos.add(in.readInt());
-				bar[pos.get(pos.size() - 1)] = SkillRegistry.get(in.readUTF());
+				size = in.readInt();
+				bar[size] = SkillRegistry.get(in.readUTF());
 			} catch (EOFException e) {
 				break;
 			}
@@ -100,9 +100,10 @@ public class InitSkillPacket extends SkillPacket {
 			for (String sk : active) {
 				skills.activeSkills.add(sk);
 			}
-			for (int i : pos) {
+			for (int i = 0; i < bar.length; i++) {
 				skills.skillBar[i] = bar[i];
 			}
+			SkillAPI.proxy.updateKeyBindingTypes(player);
 		}
 	}
 }

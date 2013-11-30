@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import skillapi.packets.ActiveSkillPacket;
+import skillapi.packets.ManaSpentPacket;
 import skillapi.packets.TickDataSkillPacket;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.TickType;
@@ -45,6 +46,7 @@ public class SkillTickHandler implements IScheduledTickHandler {
 					data[0] = 0;//stop charge timer
 					if (skill.onSkillTrigger((EntityPlayer) tickData[0])) {
 						PlayerSkills.get((EntityPlayer) tickData[0]).spendMana(skill.getManaCost((EntityPlayer) tickData[0]));
+						PacketDispatcher.sendPacketToPlayer(new ManaSpentPacket(((EntityPlayer) tickData[0]).entityId, skill.getManaCost((EntityPlayer) tickData[0])).getPacket(), (Player) tickData[0]);
 						if (skill.getDuration((EntityPlayer) tickData[0]) > 0) {
 							if (!actives.contains(skillName)) {
 								actives.add(skillName);

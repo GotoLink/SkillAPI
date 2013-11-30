@@ -63,6 +63,7 @@ public class PlayerSkills implements IExtendedEntityProperties {
 	}
 
 	public void skillGet(Skill skill) {
+		knownSkills.add(skill.getName());
 		player.worldObj.playSoundAtEntity(player, "note.snare", 0.2F, 1.0F);
 		skillJustLearnt = skill;
 		PacketDispatcher.sendPacketToPlayer(new LearnSkillPacket(player.entityId, skill.getName()).getPacket(), (Player) player);
@@ -83,7 +84,6 @@ public class PlayerSkills implements IExtendedEntityProperties {
 	public void startCharge() {
 		chargingSkill.charge = 1;
 		if (!player.worldObj.isRemote) {
-			;
 			int[] data = SkillTickHandler.getData(player, chargingSkill);
 			data[0] = 1;
 			SkillTickHandler.get(player).put(chargingSkill.getName(), data);
@@ -141,15 +141,18 @@ public class PlayerSkills implements IExtendedEntityProperties {
 		int i = 0;
 		String skillName;
 		while (true) {
-			skillName = compound.getString("KnownSkill" + (i++));
+			skillName = compound.getString("KnownSkill" + i);
 			if (skillName.equals(""))
 				break;
 			if (SkillRegistry.get(skillName) != null)
 				knownSkills.add(skillName);
+			i++;
 		}
-		for (int j = 0; j < skillBar.length; j++)
-			if (!(skillName = compound.getString("SkillBarSlot" + j)).equals(""))
+		for (int j = 0; j < skillBar.length; j++){
+			skillName = compound.getString("SkillBarSlot" + j);
+			if (!skillName.equals(""))
 				skillBar[j] = SkillRegistry.get(skillName);
+		}
 	}
 
 	@Override

@@ -80,7 +80,7 @@ public class HudSkills {
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				game.renderEngine.bindTexture(GuiKnownSkills.GUI);
 				if (player.skillBar[i].cooldownFrame >= 1)
-					game.ingameGUI.drawTexturedModalRect(posX + 3, posY + 3 + (20 * i), 240, (player.skillBar[i].cooldownFrame * 16), 16, 16);
+					game.ingameGUI.drawTexturedModalRect(posX + 3, posY + 3 + (20 * i), 240, player.skillBar[i].cooldownFrame * 16, 16, 16);
 			}
 	}
 

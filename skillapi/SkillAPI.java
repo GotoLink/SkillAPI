@@ -10,7 +10,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 
 @Mod(modid = "skillapi", name = "Skill API", version = "0.1")
 @NetworkMod(clientSideRequired = true, packetHandler = SkillPacketHandler.class, channels = { SkillPacketHandler.CHANNEL0, SkillPacketHandler.CHANNEL1, SkillPacketHandler.CHANNEL2,
-	SkillPacketHandler.CHANNEL3, SkillPacketHandler.CHANNEL4, SkillPacketHandler.CHANNEL5 })
+	SkillPacketHandler.CHANNEL3, SkillPacketHandler.CHANNEL4, SkillPacketHandler.CHANNEL5, SkillPacketHandler.CHANNEL6 })
 public final class SkillAPI {
 	@SidedProxy(modId = "skillapi", clientSide = "skillapi.client.SkillAPIClientProxy", serverSide = "skillapi.SkillAPIProxy")
 	public static SkillAPIProxy proxy;

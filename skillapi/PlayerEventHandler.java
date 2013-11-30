@@ -32,7 +32,7 @@ public class PlayerEventHandler implements IPlayerTracker {
 
 	@ForgeSubscribe
 	public void onSpawn(EntityJoinWorldEvent event) {
-		if (event.entity instanceof EntityPlayerMP) {
+		if (!event.world.isRemote && event.entity instanceof EntityPlayer) {
 			PacketDispatcher.sendPacketToPlayer(new InitSkillPacket(PlayerSkills.get((EntityPlayer) event.entity)).getPacket(), (Player) event.entity);
 		}
 	}
@@ -42,7 +42,7 @@ public class PlayerEventHandler implements IPlayerTracker {
 		if (event.entityLiving instanceof EntityPlayer) {
 			PlayerSkills sk = PlayerSkills.get((EntityPlayer) event.entityLiving);
 			sk.setPrevMana(sk.getMana());
-			if (sk.getMana() < 20 && (event.entityLiving.ticksExisted % 20) * 12 == 0)
+			if (sk.getMana() < 20 && event.entityLiving.ticksExisted % 20 == 0)
 				sk.restoreMana(1);
 		}
 	}

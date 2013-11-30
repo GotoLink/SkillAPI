@@ -5,9 +5,11 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import skillapi.PlayerSkills;
+import skillapi.SkillAPI;
 import skillapi.SkillRegistry;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 
 public class UpdateSkillPacket extends LearnSkillPacket {
 	protected int num;
@@ -45,9 +47,10 @@ public class UpdateSkillPacket extends LearnSkillPacket {
 			} else {
 				PlayerSkills.get(player).chargingSkill = SkillRegistry.get(skill);
 			}
-			if (player instanceof EntityPlayerMP) {//Send back checked info to client
-				((EntityPlayerMP) player).playerNetServerHandler.sendPacketToPlayer(getPacket());
+			if (!player.worldObj.isRemote) {//Send back checked info to client
+				PacketDispatcher.sendPacketToPlayer(getPacket(), (Player) player);
 			}
+			SkillAPI.proxy.updateKeyBindingTypes(player);
 		}
 	}
 }

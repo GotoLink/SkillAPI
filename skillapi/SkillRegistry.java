@@ -76,7 +76,6 @@ public class SkillRegistry {
 		if (player != null && !isSkillKnown(player, skillName)) {
 			Skill skill = skillMap.get(skillName);
 			if (skill != null && skill.canPlayerLearnSkill(player)) {
-				PlayerSkills.get(player).knownSkills.add(skillName);
 				PlayerSkills.get(player).skillGet(skill);
 				if (!player.worldObj.isRemote)
 					SkillTickHandler.get(player).put(skillName, new int[] { 0, 0, 0 });

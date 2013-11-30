@@ -11,7 +11,6 @@ import org.lwjgl.opengl.GL11;
 
 import skillapi.PlayerSkills;
 import skillapi.Skill;
-import skillapi.SkillAPI;
 import skillapi.SkillRegistry;
 import skillapi.packets.UpdateSkillPacket;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -196,7 +195,6 @@ public class GuiKnownSkills extends GuiScreen {
 			if (skills.skillBar[i] != null && isMouseOverArea(mouseX, mouseY, width / 2 - 96, (height / 2 - 45) + (21 * i), 16, 16)) {
 				heldSkill = skills.skillBar[i];
 				sendSkillUpdate(i, null);
-				SkillAPI.proxy.updateKeyBindingTypes(player);
 				return;
 			}
 		int offset = Math.round((scrollPos * (skills.knownSkills.size() - 5)) / 93);
@@ -207,7 +205,6 @@ public class GuiKnownSkills extends GuiScreen {
 					for (int j = 0; j < skills.skillBar.length; j++)
 						if (skills.skillBar[j] == null) {
 							sendSkillUpdate(j, skills.knownSkills.get(i));
-							SkillAPI.proxy.updateKeyBindingTypes(player);
 							return;
 						}
 				heldSkill = SkillRegistry.get(skills.knownSkills.get(i));
@@ -223,7 +220,6 @@ public class GuiKnownSkills extends GuiScreen {
 				for (int i = 0; i < skills.skillBar.length; i++)
 					if (isMouseOverArea(mouseX, mouseY, width / 2 - 96, (height / 2 - 45) + (21 * i), 16, 16)) {
 						sendSkillUpdate(i, heldSkill.getName());
-						SkillAPI.proxy.updateKeyBindingTypes(player);
 						break;
 					}
 				heldSkill = null;
