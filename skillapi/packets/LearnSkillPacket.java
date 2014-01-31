@@ -1,10 +1,7 @@
 package skillapi.packets;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.EOFException;
-import java.io.IOException;
-
+import com.google.common.base.Charsets;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import skillapi.PlayerSkills;
 import skillapi.SkillRegistry;
@@ -22,33 +19,42 @@ public class LearnSkillPacket extends SkillPacket {
 	}
 
 	@Override
-	String getChannel() {
-		return SkillPacketHandler.CHANNEL1;
+	public String getChannel() {
+		return SkillPacketHandler.CHANNELS[1];
 	}
 
 	@Override
-	void write(DataOutput out) throws IOException {
+    public void toBytes(ByteBuf out) {
 		out.writeInt(id);
-		if (skill != null)
-			out.writeUTF(skill);
+        byte[] temp;
+		if (skill != null){
+            temp = skill.getBytes(Charsets.UTF_8);
+            out.writeByte(temp.length);
+			out.writeBytes(temp);
+        }else{
+            out.writeByte(-1);
+        }
 	}
 
 	@Override
-	void read(DataInput in) throws IOException {
+    public void fromBytes(ByteBuf in) {
 		id = in.readInt();
-		try {
-			skill = in.readUTF();
-		} catch (EOFException e) {
-		}
+        byte i = in.readByte();
+        if(i>0){
+            byte[] temp = new byte[i];
+            in.readBytes(temp);
+			skill = new String(temp,Charsets.UTF_8);
+        }
 	}
 
 	@Override
-	void run(EntityPlayer player) {
-		if (player.entityId == id && (SkillRegistry.isSkillRegistered(skill) || skill == null)) {
+	boolean run(EntityPlayer player) {
+		if (player.func_145782_y() == id && (SkillRegistry.isSkillRegistered(skill) || skill == null)) {
 			PlayerSkills.get(player).skillJustLearnt = SkillRegistry.get(skill);
 			if (skill != null && !SkillRegistry.isSkillKnown(player, skill)) {
 				PlayerSkills.get(player).knownSkills.add(skill);
 			}
 		}
+        return false;
 	}
 }

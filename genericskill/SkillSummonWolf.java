@@ -2,12 +2,12 @@ package genericskill;
 
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 
 public class SkillSummonWolf extends SkillGeneric {
 	@Override
 	public boolean canPlayerUseSkill(EntityPlayer player) {
-		return player.inventory.hasItem(Item.bone.itemID);
+		return player.inventory.func_146028_b(Items.bone);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class SkillSummonWolf extends SkillGeneric {
 	public boolean onSkillTrigger(EntityPlayer player) {
 		if (!canPlayerUseSkill(player))
 			return false;
-		player.inventory.consumeInventoryItem(Item.bone.itemID);
+		player.inventory.func_146026_a(Items.bone);
 		player.worldObj.playSoundAtEntity(player, "mob.ghast.fireball", 1.0F, 1.0F);
 		EntityWolf wolf = new EntityWolf(player.worldObj);
 		wolf.setLocationAndAngles(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);

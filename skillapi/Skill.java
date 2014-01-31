@@ -72,7 +72,7 @@ public abstract class Skill {
 	}
 
 	/**
-	 * Called from {@link SkillAPI#learnSkill(EntityPlayer, String)}
+	 * Called from {@link SkillRegistry#learnSkill(EntityPlayer, String)}
 	 * 
 	 * @param player
 	 *            The player trying to learn the skill.
@@ -119,7 +119,7 @@ public abstract class Skill {
 
 	/**
 	 * This skill has been triggered, called from
-	 * {@link SkillAPI#triggerSkill(EntityPlayer,String)} or from the keybind if
+	 * {@link SkillRegistry#triggerSkill(EntityPlayer,String)} or from the keybind if
 	 * this skill is in the skill bar
 	 * 
 	 * @param player

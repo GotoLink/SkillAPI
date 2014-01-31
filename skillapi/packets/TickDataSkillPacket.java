@@ -4,6 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import skillapi.PlayerSkills;
 import skillapi.Skill;
@@ -23,27 +24,27 @@ public class TickDataSkillPacket extends UpdateSkillPacket {
 	}
 
 	@Override
-	String getChannel() {
-		return SkillPacketHandler.CHANNEL5;
+	public String getChannel() {
+		return SkillPacketHandler.CHANNELS[5];
 	}
 
 	@Override
-	void write(DataOutput out) throws IOException {
-		super.write(out);
+    public void toBytes(ByteBuf out) {
+		super.toBytes(out);
 		out.writeFloat(time);
 		out.writeInt(charge);
 	}
 
 	@Override
-	void read(DataInput in) throws IOException {
-		super.read(in);
+    public void fromBytes(ByteBuf in) {
+		super.fromBytes(in);
 		time = in.readFloat();
 		charge = in.readInt();
 	}
 
 	@Override
-	void run(EntityPlayer player) {
-		if (player.entityId == id && SkillRegistry.isSkillKnown(player, skill)) {//Valid update packet
+	boolean run(EntityPlayer player) {
+		if (player.func_145782_y() == id && SkillRegistry.isSkillKnown(player, skill)) {//Valid update packet
 			Skill skil = SkillRegistry.get(skill);
 			skil.charge = charge;
 			if (charge == 0 && PlayerSkills.get(player).chargingSkill != null && PlayerSkills.get(player).chargingSkill.getName().equals(skill)) {
@@ -52,5 +53,6 @@ public class TickDataSkillPacket extends UpdateSkillPacket {
 			skil.timeLeft = time;
 			skil.cooldownFrame = num;
 		}
+        return false;
 	}
 }

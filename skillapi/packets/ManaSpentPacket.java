@@ -1,9 +1,6 @@
 package skillapi.packets;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import skillapi.PlayerSkills;
 
@@ -20,26 +17,27 @@ public class ManaSpentPacket extends SkillPacket{
 	}
 
 	@Override
-	String getChannel() {
-		return SkillPacketHandler.CHANNEL6;
+	public String getChannel() {
+		return SkillPacketHandler.CHANNELS[6];
 	}
 
 	@Override
-	void write(DataOutput out) throws IOException {
+    public void toBytes(ByteBuf out) {
 		out.writeInt(id);
 		out.writeInt(cost);
 	}
 
 	@Override
-	void read(DataInput in) throws IOException {
+    public void fromBytes(ByteBuf in) {
 		id=in.readInt();
 		cost=in.readInt();
 	}
 
 	@Override
-	void run(EntityPlayer player) {
-		if(player.entityId == id){
+	boolean run(EntityPlayer player) {
+		if(player.func_145782_y() == id){
 			PlayerSkills.get(player).spendMana(cost);
 		}
+        return false;
 	}
 }

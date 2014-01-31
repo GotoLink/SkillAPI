@@ -2,7 +2,7 @@ package genericskill;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumMovingObjectType;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -32,7 +32,7 @@ public class SkillUnrelentingForce extends SkillGeneric {
 	public boolean onSkillTrigger(EntityPlayer player) {
 		if (!player.worldObj.isRemote)
 			player.worldObj.spawnEntityInWorld(new EntityShockWave(player.worldObj, player));
-		player.addChatMessage(player.username + ": Fus Ro Dah!");
+		player.func_146105_b(new ChatComponentText(player.func_146103_bH().getName() + ": Fus Ro Dah!"));
 		player.worldObj.playSoundAtEntity(player, "random.explode", 0.2F, 1.0F);
 		MovingObjectPosition movingobjectposition = getMovingObjectPositionFromPlayer(player);
 		if (movingobjectposition == null)
@@ -40,11 +40,11 @@ public class SkillUnrelentingForce extends SkillGeneric {
 		if (movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof Entity)
 			movingobjectposition.entityHit.addVelocity(-Math.sin(Math.toRadians(player.rotationYaw)) * Math.cos(Math.toRadians(player.rotationPitch)) * 3,
 					(0.5 - Math.sin(Math.toRadians(player.rotationPitch))) * 3, Math.cos(Math.toRadians(player.rotationYaw)) * Math.cos(Math.toRadians(player.rotationPitch)) * 3);
-		else if (movingobjectposition.typeOfHit == EnumMovingObjectType.TILE)
+		else if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
 			for (int x = movingobjectposition.blockX - 1; x < movingobjectposition.blockX + 2; x++)
 				for (int y = movingobjectposition.blockY - 1; y < movingobjectposition.blockY + 2; y++)
 					for (int z = movingobjectposition.blockZ - 1; z < movingobjectposition.blockZ + 2; z++)
-						player.worldObj.setBlockToAir(x, y, z);
+						player.worldObj.func_147468_f(x, y, z);
 		return true;
 	}
 

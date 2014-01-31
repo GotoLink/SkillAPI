@@ -2,16 +2,14 @@ package skillapi.client;
 
 import java.util.Iterator;
 
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.Minecraft;
 
 import org.lwjgl.opengl.GL11;
 
-import skillapi.PlayerSkills;
-import skillapi.Skill;
-import skillapi.SkillRegistry;
-import skillapi.SkillTickHandler;
+import skillapi.*;
 import skillapi.packets.LearnSkillPacket;
-import cpw.mods.fml.common.network.PacketDispatcher;
+import skillapi.packets.SkillPacket;
 
 public class HudSkills {
 	private Minecraft game;
@@ -130,7 +128,8 @@ public class HudSkills {
 				game.fontRenderer.drawStringWithShadow(player.skillJustLearnt.getName(), scaledWidth - 120, (scaledHeight + 3) / 2 + (skillGetTimer % 50) - 50, player.skillJustLearnt.getNameColour());
 			} else {
 				player.skillJustLearnt = null;
-				PacketDispatcher.sendPacketToServer(new LearnSkillPacket(game.thePlayer.entityId, null).getPacket());
+                SkillPacket pkt = new LearnSkillPacket(game.thePlayer.func_145782_y(), null);
+				SkillAPI.channels.get(pkt.getChannel()).sendToServer(pkt.getPacket(Side.SERVER));
 				skillGetTimer = 50;
 			}
 		}

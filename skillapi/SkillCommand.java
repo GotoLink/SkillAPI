@@ -32,7 +32,7 @@ public class SkillCommand extends CommandGive {
 			EntityPlayerMP entityplayermp = getPlayer(sender, command[0]);
 			if (SkillRegistry.isSkillRegistered(command[1]) && !SkillRegistry.isSkillKnown(entityplayermp, command[0])) {
 				SkillRegistry.learnSkill(entityplayermp, command[1]);
-				notifyAdmins(sender, command[0] + " learned " + command[1], new Object[] { entityplayermp.getEntityName() });
+				notifyAdmins(sender, command[0] + " learned " + command[1], new Object[] { entityplayermp.getCommandSenderName() });
 			}
 		} else {
 			throw new WrongUsageException(getCommandUsage(sender), new Object[0]);

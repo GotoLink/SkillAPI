@@ -1,13 +1,11 @@
 package skillapi.packets;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.EOFException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.common.base.Charsets;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import skillapi.PlayerSkills;
 import skillapi.Skill;
@@ -25,7 +23,7 @@ public class InitSkillPacket extends SkillPacket {
 	}
 
 	public InitSkillPacket(PlayerSkills skills) {
-		this.id = skills.getPlayer().entityId;
+		this.id = skills.getPlayer().func_145782_y();
 		this.mana = skills.getMana();
 		this.known = skills.knownSkills;
 		this.active = skills.activeSkills;
@@ -33,63 +31,82 @@ public class InitSkillPacket extends SkillPacket {
 	}
 
 	@Override
-	String getChannel() {
-		return SkillPacketHandler.CHANNEL0;
+	public String getChannel() {
+		return SkillPacketHandler.CHANNELS[0];
 	}
 
 	@Override
-	void write(DataOutput out) throws IOException {
+    public void toBytes(ByteBuf out) {
 		out.writeInt(id);
 		out.writeInt(mana);
 		out.writeInt(known.size());
+        byte[] temp;
 		if (known.size() > 0) {
 			for (String skill : known) {
-				out.writeUTF(skill);
+                temp = skill.getBytes(Charsets.UTF_8);
+                out.writeByte(temp.length);
+				out.writeBytes(temp);
 			}
 		}
 		out.writeInt(active.size());
 		if (active.size() > 0) {
 			for (String skill : active) {
-				out.writeUTF(skill);
+                temp = skill.getBytes(Charsets.UTF_8);
+                out.writeByte(temp.length);
+				out.writeBytes(temp);
 			}
 		}
 		for (int i = 0; i < bar.length; i++) {
 			if (bar[i] != null) {
-				out.writeInt(i);
-				out.writeUTF(bar[i].getName());
-			}
+                temp = bar[i].getName().getBytes(Charsets.UTF_8);
+                out.writeByte(temp.length);
+				out.writeBytes(temp);
+			}else{
+                out.writeByte(0);
+            }
 		}
+        out.writeByte(-1);
 	}
 
 	@Override
-	void read(DataInput in) throws IOException {
+    public void fromBytes(ByteBuf in) {
 		id = in.readInt();
 		mana = in.readInt();
 		int size = in.readInt();
+        byte[] temp;
 		if (size > 0) {
 			for (int i = 0; i < size; i++) {
-				known.add(in.readUTF());
+                temp = new byte[in.readByte()];
+                in.readBytes(temp);
+				known.add(new String(temp,Charsets.UTF_8));
 			}
 		}
 		size = in.readInt();
 		if (size > 0) {
 			for (int i = 0; i < size; i++) {
-				active.add(in.readUTF());
+                temp = new byte[in.readByte()];
+                in.readBytes(temp);
+				active.add(new String(temp,Charsets.UTF_8));
 			}
 		}
-		while (true) {
-			try {
-				size = in.readInt();
-				bar[size] = SkillRegistry.get(in.readUTF());
-			} catch (EOFException e) {
-				break;
-			}
+        for (int i = 0; i < bar.length; i++) {
+            size = in.readByte();
+            if(size<0){
+                break;
+            }
+            if(size>0){
+                temp = new byte[size];
+                in.readBytes(temp);
+                bar[i] = SkillRegistry.get(new String(temp,Charsets.UTF_8));
+            }else{
+                bar[i] = null;
+            }
 		}
 	}
 
 	@Override
-	void run(EntityPlayer player) {
-		if (player.entityId == id) {
+	boolean run(EntityPlayer player) {
+		if (player.func_145782_y() == id) {
 			PlayerSkills skills = PlayerSkills.get(player);
 			skills.setMana(mana);
 			skills.knownSkills.clear();
@@ -105,5 +122,6 @@ public class InitSkillPacket extends SkillPacket {
 			}
 			SkillAPI.proxy.updateKeyBindingTypes(player);
 		}
+        return false;
 	}
 }

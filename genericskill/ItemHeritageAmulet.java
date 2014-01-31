@@ -7,8 +7,8 @@ import net.minecraft.world.World;
 import skillapi.SkillRegistry;
 
 public class ItemHeritageAmulet extends Item {
-	public ItemHeritageAmulet(int i) {
-		super(i);
+	public ItemHeritageAmulet() {
+		super();
 		setUnlocalizedName("heritageAmulet");
 		setTextureName("genericskill:heritageAmulet");
 		setMaxStackSize(1);

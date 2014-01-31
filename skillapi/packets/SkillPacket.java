@@ -1,32 +1,22 @@
 package skillapi.packets;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.relauncher.Side;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 
-public abstract class SkillPacket {
-	public final Packet getPacket() {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		DataOutputStream out = new DataOutputStream(bos);
-		try {
-			write(out);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return new Packet250CustomPayload(getChannel(), bos.toByteArray());
+public abstract class SkillPacket implements IMessage {
+	public final FMLProxyPacket getPacket(Side side) {
+        ByteBuf buf = Unpooled.buffer();
+        toBytes(buf);
+        FMLProxyPacket p = new FMLProxyPacket(buf, getChannel());
+        p.setTarget(side);
+		return p;
 	}
 
-	abstract String getChannel();
+	public abstract String getChannel();
 
-	abstract void write(DataOutput out) throws IOException;
-
-	abstract void read(DataInput in) throws IOException;
-
-	abstract void run(EntityPlayer player);
+	abstract boolean run(EntityPlayer player);
 }

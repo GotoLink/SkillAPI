@@ -1,5 +1,6 @@
 package skillapi.client;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +11,6 @@ import org.lwjgl.input.Keyboard;
 import skillapi.PlayerSkills;
 import skillapi.Skill;
 import skillapi.SkillAPIProxy;
-import cpw.mods.fml.client.registry.KeyBindingRegistry;
 
 public class SkillAPIClientProxy extends SkillAPIProxy {
 	public static KeyBinding skillGuiKeyBinding, skillKeyBindings[] = new KeyBinding[5];
@@ -19,15 +19,17 @@ public class SkillAPIClientProxy extends SkillAPIProxy {
 
 	@Override
 	public void loadSkillKeyBindings() {
-		skillGuiKeyBinding = new KeyBinding("key.skillGui", Keyboard.getKeyIndex(Character.toString(keys[0])));
+		skillGuiKeyBinding = new KeyBinding("key.skillGui", Keyboard.getKeyIndex(Character.toString(keys[0])), "key.categories.gui");
 		handler.addKeyBinding(skillGuiKeyBinding, false);
 		for (int i = 1; i < keys.length; i++) {
-			skillKeyBindings[i - 1] = new KeyBinding("key.skill" + i, Keyboard.getKeyIndex(Character.toString(keys[i])));
+			skillKeyBindings[i - 1] = new KeyBinding("key.skill" + i, Keyboard.getKeyIndex(Character.toString(keys[i])), "key.categories.gameplay");
 		}
 		for (int i = 0; i < skillKeyBindings.length; i++) {
 			handler.addKeyBinding(skillKeyBindings[i], false);
 		}
-		KeyBindingRegistry.registerKeyBinding(handler);
+        for(KeyBinding key:handler.keyBindings){
+		    ClientRegistry.registerKeyBinding(key);
+        }
 		updateKeyBindingTypes(Minecraft.getMinecraft().thePlayer);
 	}
 

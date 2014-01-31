@@ -26,7 +26,7 @@ public class SkillBindingSignet extends SkillGeneric {
 
 	@Override
 	public boolean canPlayerUseSkill(EntityPlayer player) {
-		return player.inventory.hasItem(GenericSkills.heritageAmulet.itemID);
+		return player.inventory.func_146028_b(GenericSkills.heritageAmulet);
 	}
 
 	@Override
@@ -40,11 +40,11 @@ public class SkillBindingSignet extends SkillGeneric {
 			int posX = chunkcoordinates.posX;
 			int posY = chunkcoordinates.posY;
 			int posZ = chunkcoordinates.posZ;
-			while (!player.worldObj.isAirBlock(posX, posY, posZ))
+			while (!player.worldObj.func_147437_c(posX, posY, posZ))
 				posY++; //So you don't spawn in the floor.
 			player.setPositionAndUpdate(posX + 0.5F, posY + 0.1F, posZ + 0.5F);
 		}
-		player.inventory.consumeInventoryItem(GenericSkills.heritageAmulet.itemID);
+		player.inventory.func_146026_a(GenericSkills.heritageAmulet);
 		player.worldObj.playSoundAtEntity(player, "mob.ghast.fireball", 1.0F, 1.0F);
 		return true;
 	}

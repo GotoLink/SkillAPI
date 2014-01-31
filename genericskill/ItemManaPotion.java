@@ -10,8 +10,8 @@ public class ItemManaPotion extends Item {
 	private int restoreAmount;
 
 	/* Items can use mana too! */
-	public ItemManaPotion(int id, int restoreAmount) {
-		super(id);
+	public ItemManaPotion(int restoreAmount) {
+		super();
 		setUnlocalizedName("manaPotion");
 		setTextureName("genericskill:manapotion");
 		setMaxStackSize(16);

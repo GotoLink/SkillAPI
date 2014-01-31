@@ -1,10 +1,8 @@
 package skillapi;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 public class SkillAPIProxy {
 	public void loadSkillKeyBindings() {
@@ -14,9 +12,9 @@ public class SkillAPIProxy {
 	}
 
 	public void register() {
-		TickRegistry.registerScheduledTickHandler(new SkillTickHandler(), Side.SERVER);
+		FMLCommonHandler.instance().bus().register(new SkillTickHandler());
 		PlayerEventHandler playerEvent = new PlayerEventHandler();
 		MinecraftForge.EVENT_BUS.register(playerEvent);
-		GameRegistry.registerPlayerTracker(playerEvent);
+        FMLCommonHandler.instance().bus().register(playerEvent);
 	}
 }

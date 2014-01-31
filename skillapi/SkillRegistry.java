@@ -66,7 +66,7 @@ public class SkillRegistry {
 	 * 
 	 * @param player
 	 *            to learn the skill to
-	 * @param skill
+	 * @param skillName
 	 *            to teach to the player
 	 * @return true if the player learned the skill successfully. false if the
 	 *         skill does not exist, the player already knows it or the player
@@ -76,9 +76,10 @@ public class SkillRegistry {
 		if (player != null && !isSkillKnown(player, skillName)) {
 			Skill skill = skillMap.get(skillName);
 			if (skill != null && skill.canPlayerLearnSkill(player)) {
-				PlayerSkills.get(player).skillGet(skill);
-				if (!player.worldObj.isRemote)
+                if (!player.worldObj.isRemote){
+				    PlayerSkills.get(player).skillGet(skill);
 					SkillTickHandler.get(player).put(skillName, new int[] { 0, 0, 0 });
+                }
 				return true;
 			}
 		}

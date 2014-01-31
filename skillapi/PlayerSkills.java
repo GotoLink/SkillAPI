@@ -5,14 +5,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 import skillapi.packets.LearnSkillPacket;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
+import skillapi.packets.SkillPacket;
 
 public class PlayerSkills implements IExtendedEntityProperties {
 	public List<String> knownSkills = new ArrayList<String>();
@@ -66,7 +67,10 @@ public class PlayerSkills implements IExtendedEntityProperties {
 		knownSkills.add(skill.getName());
 		player.worldObj.playSoundAtEntity(player, "note.snare", 0.2F, 1.0F);
 		skillJustLearnt = skill;
-		PacketDispatcher.sendPacketToPlayer(new LearnSkillPacket(player.entityId, skill.getName()).getPacket(), (Player) player);
+        if(player instanceof EntityPlayerMP){
+            SkillPacket pkt = new LearnSkillPacket(player.func_145782_y(), skill.getName());
+		    SkillAPI.channels.get(pkt.getChannel()).sendTo(pkt.getPacket(Side.CLIENT), (EntityPlayerMP) player);
+        }
 	}
 
 	public boolean chargeSkill(Skill skill) {

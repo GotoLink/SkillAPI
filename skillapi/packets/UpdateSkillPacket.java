@@ -1,15 +1,10 @@
 package skillapi.packets;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import skillapi.PlayerSkills;
 import skillapi.SkillAPI;
 import skillapi.SkillRegistry;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
 
 public class UpdateSkillPacket extends LearnSkillPacket {
 	protected int num;
@@ -23,34 +18,35 @@ public class UpdateSkillPacket extends LearnSkillPacket {
 	}
 
 	@Override
-	String getChannel() {
-		return SkillPacketHandler.CHANNEL2;
+	public String getChannel() {
+		return SkillPacketHandler.CHANNELS[2];
 	}
 
 	@Override
-	void write(DataOutput out) throws IOException {
+    public void toBytes(ByteBuf out) {
 		out.writeInt(num);
-		super.write(out);
+		super.toBytes(out);
 	}
 
 	@Override
-	void read(DataInput in) throws IOException {
+    public void fromBytes(ByteBuf in) {
 		num = in.readInt();
-		super.read(in);
+		super.fromBytes(in);
 	}
 
 	@Override
-	void run(EntityPlayer player) {
-		if (player.entityId == id && (SkillRegistry.isSkillKnown(player, skill) || skill == null)) {//Valid update packet
+	boolean run(EntityPlayer player) {
+		if (player.func_145782_y() == id && (SkillRegistry.isSkillKnown(player, skill) || skill == null)) {//Valid update packet
 			if (num >= 0) {
 				PlayerSkills.get(player).skillBar[num] = SkillRegistry.get(skill);
 			} else {
 				PlayerSkills.get(player).chargingSkill = SkillRegistry.get(skill);
 			}
-			if (!player.worldObj.isRemote) {//Send back checked info to client
-				PacketDispatcher.sendPacketToPlayer(getPacket(), (Player) player);
-			}
 			SkillAPI.proxy.updateKeyBindingTypes(player);
+            if (!player.worldObj.isRemote) {//Send back checked info to client
+                return true;
+            }
 		}
+        return false;
 	}
 }

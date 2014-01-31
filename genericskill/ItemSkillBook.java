@@ -15,11 +15,9 @@ public class ItemSkillBook extends Item {
 	/**
 	 * Generic item with already set unlocalized name and texture.
 	 * Can teach skills on player right click
-	 * 
-	 * @param i
 	 */
-	public ItemSkillBook(int i) {
-		super(i);
+	public ItemSkillBook() {
+		super();
 		setUnlocalizedName("genSkillBook");
 		setTextureName("genericskill:genskillbook");
 		setMaxStackSize(1);

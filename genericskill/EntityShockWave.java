@@ -50,10 +50,9 @@ public class EntityShockWave extends Entity {
 	}
 
 	protected void collideWithNearbyEntities() {
-		List<?> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(owner, this.boundingBox.expand(1.0D, 1.0D, 1.0D));
+		List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(owner, this.boundingBox.expand(1.0D, 1.0D, 1.0D));
 		if (list != null && !list.isEmpty()) {
-			for (int i = 0; i < list.size(); ++i) {
-				Entity entity = (Entity) list.get(i);
+			for (Entity entity: list) {
 				if (entity.canBePushed()) {
 					double d0 = entity.posX - this.posX;
 					double d1 = entity.posZ - this.posZ;

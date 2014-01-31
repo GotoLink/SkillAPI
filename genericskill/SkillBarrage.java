@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -33,12 +34,7 @@ public class SkillBarrage extends SkillGeneric {
 
 	@Override
 	public boolean canPlayerUseSkill(EntityPlayer player) {
-		int arrowCount = 0;
-		ItemStack[] playerInv = player.inventory.mainInventory;
-		for (int slot = 0; slot < playerInv.length; slot++)
-			if (playerInv[slot] != null && playerInv[slot].itemID == Item.arrow.itemID)
-				arrowCount += playerInv[slot].stackSize;
-		return arrowCount > 1;
+        return player.inventory.func_146028_b(Items.arrow);
 	}
 
 	@Override
@@ -49,7 +45,7 @@ public class SkillBarrage extends SkillGeneric {
 		float shotStrength = (player.experienceLevel + 1) / 1.7F;
 		world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
 		for (int i = 0; i < 5; i++)
-			if (player.inventory.consumeInventoryItem(Item.arrow.itemID) && !world.isRemote)
+			if (player.inventory.func_146026_a(Items.arrow) && !world.isRemote)
 				world.spawnEntityInWorld(new EntityArrow(world, player, shotStrength - (rand.nextFloat() * rand.nextFloat() * rand.nextFloat())));
 		return true;
 	}
