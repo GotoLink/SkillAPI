@@ -8,6 +8,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.NetHandlerPlayServer;
 
 public class SkillPacketHandler {
@@ -31,8 +33,13 @@ public class SkillPacketHandler {
         SkillPacket skpacket = packets.get(event.packet.channel());
         if (skpacket != null) {
             skpacket.fromBytes(event.packet.payload());
-            skpacket.run(FMLClientHandler.instance().getClient().thePlayer);
+            skpacket.run(getPlayer());
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static EntityPlayer getPlayer(){
+        return FMLClientHandler.instance().getClient().thePlayer;
     }
 	
 	public static Map<String, SkillPacket> packets = new HashMap<String, SkillPacket>();

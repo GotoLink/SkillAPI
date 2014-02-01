@@ -1,9 +1,5 @@
 package skillapi.packets;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import skillapi.PlayerSkills;
