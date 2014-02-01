@@ -21,7 +21,7 @@ minecraft {
 }
 version = "0.1(1.7.2)"
 archivesBaseName = project.projectDir.name
-sourceSets.main.java{srcDirs project.projectDir.getPath() exclude("build*", "bin/**" , ".*")}
+sourceSets.main.java{srcDirs project.projectDir.getPath() include("skillapi/**" , "genericskill/**")}
 sourceSets.main.resources{srcDirs project.projectDir.getPath() include("assets/**", "mcmod.info" , "pack.mcmeta")}
 processResources {
     // replace stuff in mcmod.info, nothing else
@@ -32,13 +32,12 @@ processResources {
     }
     // copy everything else, thats not mcmod.info
     from(project.sourceSets.main.resources.srcDirs) {
-        include("assets/**", "pack.mcmeta")
+        include("*.png", "*.lang", "pack.mcmeta")
     }
 }
 jar {
 //Keep the jar as clean as possible
     includeEmptyDirs = false
-    include("assets/**", "skillapi/**", "genericskill/**", "pack.mcmeta", "mcmod.info")
 }
 task unJar(type:Copy, dependsOn:'build')
 unJar{
