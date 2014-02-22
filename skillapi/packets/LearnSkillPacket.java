@@ -49,7 +49,7 @@ public class LearnSkillPacket extends SkillPacket {
 
 	@Override
 	boolean run(EntityPlayer player) {
-		if (player.func_145782_y() == id && (SkillRegistry.isSkillRegistered(skill) || skill == null)) {
+		if (player.getEntityId() == id && (SkillRegistry.isSkillRegistered(skill) || skill == null)) {
 			PlayerSkills.get(player).skillJustLearnt = SkillRegistry.get(skill);
 			if (skill != null && !SkillRegistry.isSkillKnown(player, skill)) {
 				PlayerSkills.get(player).knownSkills.add(skill);

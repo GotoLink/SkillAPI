@@ -36,7 +36,7 @@ public class UpdateSkillPacket extends LearnSkillPacket {
 
 	@Override
 	boolean run(EntityPlayer player) {
-		if (player.func_145782_y() == id && (SkillRegistry.isSkillKnown(player, skill) || skill == null)) {//Valid update packet
+		if (player.getEntityId() == id && (SkillRegistry.isSkillKnown(player, skill) || skill == null)) {//Valid update packet
 			if (num >= 0) {
 				PlayerSkills.get(player).skillBar[num] = SkillRegistry.get(skill);
 			} else {

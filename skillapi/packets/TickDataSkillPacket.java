@@ -40,7 +40,7 @@ public class TickDataSkillPacket extends UpdateSkillPacket {
 
 	@Override
 	boolean run(EntityPlayer player) {
-		if (player.func_145782_y() == id && SkillRegistry.isSkillKnown(player, skill)) {//Valid update packet
+		if (player.getEntityId() == id && SkillRegistry.isSkillKnown(player, skill)) {//Valid update packet
 			Skill skil = SkillRegistry.get(skill);
 			skil.charge = charge;
 			if (charge == 0 && PlayerSkills.get(player).chargingSkill != null && PlayerSkills.get(player).chargingSkill.getName().equals(skill)) {

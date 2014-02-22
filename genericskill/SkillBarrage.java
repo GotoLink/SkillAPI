@@ -34,7 +34,7 @@ public class SkillBarrage extends SkillGeneric {
 
 	@Override
 	public boolean canPlayerUseSkill(EntityPlayer player) {
-        return player.inventory.func_146028_b(Items.arrow);
+        return player.inventory.hasItem(Items.arrow);
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class SkillBarrage extends SkillGeneric {
 		float shotStrength = (player.experienceLevel + 1) / 1.7F;
 		world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
 		for (int i = 0; i < 5; i++)
-			if (player.inventory.func_146026_a(Items.arrow) && !world.isRemote)
+			if (player.inventory.consumeInventoryItem(Items.arrow) && !world.isRemote)
 				world.spawnEntityInWorld(new EntityArrow(world, player, shotStrength - (rand.nextFloat() * rand.nextFloat() * rand.nextFloat())));
 		return true;
 	}

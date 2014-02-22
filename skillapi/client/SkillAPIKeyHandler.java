@@ -28,7 +28,7 @@ public class SkillAPIKeyHandler {
 	public void keyDown(TickEvent.ClientTickEvent event) {
         if(event.phase == TickEvent.Phase.END){
             for(int idx=0; idx<keyBindings.length; idx++){
-                if(keyBindings[idx].func_151470_d()){
+                if(keyBindings[idx].getIsKeyPressed()){
                     if (!active[idx] || repeatings[idx]) {
                         fireKey(keyBindings[idx]);
                         active[idx] = true;
@@ -45,7 +45,7 @@ public class SkillAPIKeyHandler {
 			if (game.currentScreen == null) {
 				for (int i = 0; i < SkillAPIClientProxy.skillKeyBindings.length; i++) {
 					if (SkillAPIClientProxy.skillKeyBindings[i] == kb && PlayerSkills.get(game.thePlayer).skillBar[i] != null) {
-                        SkillPacket pkt = new TriggerSkillPacket(game.thePlayer.func_145782_y(), i, PlayerSkills.get(game.thePlayer).skillBar[i].getName());
+                        SkillPacket pkt = new TriggerSkillPacket(game.thePlayer.getEntityId(), i, PlayerSkills.get(game.thePlayer).skillBar[i].getName());
 						SkillAPI.channels.get(pkt.getChannel()).sendToServer(pkt.getPacket(Side.SERVER));
 						return;
 					}
@@ -53,7 +53,7 @@ public class SkillAPIKeyHandler {
 			}
 			if (kb == SkillAPIClientProxy.skillGuiKeyBinding) {
 				if (game.currentScreen == null) {
-					game.func_147108_a(new GuiKnownSkills(PlayerSkills.get(game.thePlayer)));
+					game.displayGuiScreen(new GuiKnownSkills(PlayerSkills.get(game.thePlayer)));
 				} else if (game.currentScreen instanceof GuiKnownSkills) {
 					game.thePlayer.closeScreen();
 				}

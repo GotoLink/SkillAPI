@@ -68,7 +68,7 @@ public class PlayerSkills implements IExtendedEntityProperties {
 		player.worldObj.playSoundAtEntity(player, "note.snare", 0.2F, 1.0F);
 		skillJustLearnt = skill;
         if(player instanceof EntityPlayerMP){
-            SkillPacket pkt = new LearnSkillPacket(player.func_145782_y(), skill.getName());
+            SkillPacket pkt = new LearnSkillPacket(player.getEntityId(), skill.getName());
 		    SkillAPI.channels.get(pkt.getChannel()).sendTo(pkt.getPacket(Side.CLIENT), (EntityPlayerMP) player);
         }
 	}

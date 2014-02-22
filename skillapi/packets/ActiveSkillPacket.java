@@ -35,7 +35,7 @@ public class ActiveSkillPacket extends LearnSkillPacket {
 
 	@Override
 	boolean run(EntityPlayer player) {
-		if (player.func_145782_y() == id && SkillRegistry.isSkillRegistered(skill)) {
+		if (player.getEntityId() == id && SkillRegistry.isSkillRegistered(skill)) {
 			if (active) {
 				PlayerSkills.get(player).activeSkills.add(skill);
 			} else {

@@ -23,7 +23,7 @@ public class InitSkillPacket extends SkillPacket {
 	}
 
 	public InitSkillPacket(PlayerSkills skills) {
-		this.id = skills.getPlayer().func_145782_y();
+		this.id = skills.getPlayer().getEntityId();
 		this.mana = skills.getMana();
 		this.known = skills.knownSkills;
 		this.active = skills.activeSkills;
@@ -106,7 +106,7 @@ public class InitSkillPacket extends SkillPacket {
 
 	@Override
 	boolean run(EntityPlayer player) {
-		if (player.func_145782_y() == id) {
+		if (player.getEntityId() == id) {
 			PlayerSkills skills = PlayerSkills.get(player);
 			skills.setMana(mana);
 			skills.knownSkills.clear();

@@ -42,12 +42,12 @@ public class SkillTickHandler {
                         data[0] = 0;//stop charge timer
                         if (skill.onSkillTrigger(event.player)) {
                             PlayerSkills.get(event.player).spendMana(skill.getManaCost(event.player));
-                            pkt = new ManaSpentPacket(event.player.func_145782_y(), skill.getManaCost(event.player));
+                            pkt = new ManaSpentPacket(event.player.getEntityId(), skill.getManaCost(event.player));
                             SkillAPI.channels.get(pkt.getChannel()).sendTo(pkt.getPacket(Side.CLIENT), (EntityPlayerMP) event.player);
                             if (skill.getDuration(event.player) > 0) {
                                 if (!actives.contains(skillName)) {
                                     actives.add(skillName);
-                                    pkt = new ActiveSkillPacket(event.player.func_145782_y(), skillName, true);
+                                    pkt = new ActiveSkillPacket(event.player.getEntityId(), skillName, true);
                                     SkillAPI.channels.get(pkt.getChannel()).sendTo(pkt.getPacket(Side.CLIENT), (EntityPlayerMP) event.player);
                                 }
                                 data[2] = 1;//start skill timer
@@ -63,14 +63,14 @@ public class SkillTickHandler {
                     if (data[2] > skill.getDuration(event.player) * mult || event.player.isDead) {
                         data[2] = 0;//stop skill timer
                         actives.remove(skillName);
-                        pkt = new ActiveSkillPacket(event.player.func_145782_y(), skillName, false);
+                        pkt = new ActiveSkillPacket(event.player.getEntityId(), skillName, false);
                         SkillAPI.channels.get(pkt.getChannel()).sendTo(pkt.getPacket(Side.CLIENT), (EntityPlayerMP) event.player);
                         skill.onSkillEnd(event.player);
                     }
                     skill.charge = data[0];
                     skill.cooldownFrame = data[1];
                     skill.timeLeft = skill.getDuration(event.player) <= 0 ? 0 : (skill.getDuration(event.player) - data[2] / mult);
-                    pkt = new TickDataSkillPacket(event.player.func_145782_y(), skill);
+                    pkt = new TickDataSkillPacket(event.player.getEntityId(), skill);
                     SkillAPI.channels.get(pkt.getChannel()).sendTo(pkt.getPacket(Side.CLIENT), (EntityPlayerMP) event.player);
                     map.put(skillName, data);
                 }

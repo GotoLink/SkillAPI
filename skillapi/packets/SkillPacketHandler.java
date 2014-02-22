@@ -20,7 +20,7 @@ public class SkillPacketHandler {
 		SkillPacket skpacket = packets.get(event.packet.channel());
 		if (skpacket != null) {
 			skpacket.fromBytes(event.packet.payload());
-			if(skpacket.run(((NetHandlerPlayServer) event.handler).field_147369_b)){
+			if(skpacket.run(((NetHandlerPlayServer) event.handler).playerEntity)){
                 FMLProxyPacket proxy = skpacket.getPacket(Side.CLIENT);
                 proxy.setDispatcher(event.packet.getDispatcher());
                 event.reply = proxy;

@@ -128,7 +128,7 @@ public class HudSkills {
 				game.fontRenderer.drawStringWithShadow(player.skillJustLearnt.getName(), scaledWidth - 120, (scaledHeight + 3) / 2 + (skillGetTimer % 50) - 50, player.skillJustLearnt.getNameColour());
 			} else {
 				player.skillJustLearnt = null;
-                SkillPacket pkt = new LearnSkillPacket(game.thePlayer.func_145782_y(), null);
+                SkillPacket pkt = new LearnSkillPacket(game.thePlayer.getEntityId(), null);
 				SkillAPI.channels.get(pkt.getChannel()).sendToServer(pkt.getPacket(Side.SERVER));
 				skillGetTimer = 50;
 			}

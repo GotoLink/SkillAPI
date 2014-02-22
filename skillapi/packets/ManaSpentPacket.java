@@ -35,7 +35,7 @@ public class ManaSpentPacket extends SkillPacket{
 
 	@Override
 	boolean run(EntityPlayer player) {
-		if(player.func_145782_y() == id){
+		if(player.getEntityId() == id){
 			PlayerSkills.get(player).spendMana(cost);
 		}
         return false;

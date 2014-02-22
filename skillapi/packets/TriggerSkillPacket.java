@@ -19,7 +19,7 @@ public class TriggerSkillPacket extends UpdateSkillPacket {
 
 	@Override
 	boolean run(EntityPlayer player) {
-		if (player.func_145782_y() == id && SkillRegistry.isSkillKnown(player, skill)) {
+		if (player.getEntityId() == id && SkillRegistry.isSkillKnown(player, skill)) {
 			if (PlayerSkills.get(player).skillBar[num] == SkillRegistry.get(skill)) {//Valid trigger packet
 				PlayerSkills.get(player).skillBar[num].triggerSkill(player);
 				if (!player.worldObj.isRemote) {//Send back checked info to client
