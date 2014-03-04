@@ -18,7 +18,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GenericSkills {
 	public static final String[] skills = { "Creeper Blast", "Levitate", "Summon Wolf", "Super Jump", "Healing Breeze", "Binding Signet", "Unrelenting Force", "Barrage" };
 	public static Item genSkillBook, heritageAmulet, manaPotion;
-	private static int skillBookId = 7777, heritageAmuletId = 7778, manaPotionId = 7779;
 
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
@@ -32,7 +31,7 @@ public class GenericSkills {
 		SkillRegistry.registerSkill(new SkillBarrage().setName(skills[7]).setTexture(skills[7].toLowerCase()));
 		EntityRegistry.registerModEntity(EntityShockWave.class, "FusRoDah", 0, this, 20, 4, true);
         GameRegistry.addShapelessRecipe(new ItemStack(genSkillBook), Items.gold_ingot, Items.book);
-        GameRegistry.addRecipe(new ItemStack(heritageAmulet), " S ", "S S", "GDG", Character.valueOf('S'), Items.string, Character.valueOf('G'), Items.gold_ingot, Character.valueOf('D'),
+        GameRegistry.addRecipe(new ItemStack(heritageAmulet), " S ", "S S", "GDG", 'S', Items.string, 'G', Items.gold_ingot, 'D',
                 Items.diamond);
         GameRegistry.addShapelessRecipe(new ItemStack(manaPotion), Items.glass_bottle, new ItemStack(Items.dye, 1, 4));
 	}
