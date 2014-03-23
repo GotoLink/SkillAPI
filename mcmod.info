@@ -9,7 +9,7 @@
   "mcversion": $mcversion,
   "url": "http://www.minecraftforum.net/topic/542774-",
   "updateUrl": "",
-  "authors": ["Paraknight","GotoLink"],
+  "authorList": ["Paraknight","GotoLink"],
   "parent":"",
   "screenshots": [],
   "dependencies": []
@@ -24,7 +24,7 @@
   "mcversion": $mcversion,
   "url": "http://www.minecraftforum.net/topic/542774-",
   "updateUrl": "",
-  "authors": ["Paraknight","GotoLink"],
+  "authorList": ["Paraknight","GotoLink"],
   "parent":"",
   "screenshots": [],
   "dependencies": ["skillapi"]

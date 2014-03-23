@@ -3,14 +3,12 @@ package skillapi.packets;
 import java.util.HashMap;
 import java.util.Map;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.NetHandlerPlayServer;
+import skillapi.SkillAPI;
 
 public class SkillPacketHandler {
 	public static final String[] CHANNELS = {"APISKILLINIT", "APISKILLGET", "APISKILLUPDATE", "APISKILLTRIGGER", "APISKILLACTIVATE", "APISKILLTICK", "APISKILLMANA"};
@@ -33,13 +31,8 @@ public class SkillPacketHandler {
         SkillPacket skpacket = packets.get(event.packet.channel());
         if (skpacket != null) {
             skpacket.fromBytes(event.packet.payload());
-            skpacket.run(getPlayer());
+            skpacket.run(SkillAPI.proxy.getPlayer());
         }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static EntityPlayer getPlayer(){
-        return FMLClientHandler.instance().getClient().thePlayer;
     }
 	
 	public static Map<String, SkillPacket> packets = new HashMap<String, SkillPacket>();

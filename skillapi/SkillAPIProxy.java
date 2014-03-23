@@ -17,4 +17,8 @@ public class SkillAPIProxy {
 		MinecraftForge.EVENT_BUS.register(playerEvent);
         FMLCommonHandler.instance().bus().register(playerEvent);
 	}
+
+    public EntityPlayer getPlayer(){
+        return null;
+    }
 }

@@ -1,5 +1,6 @@
 package skillapi.client;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -52,4 +53,9 @@ public class SkillAPIClientProxy extends SkillAPIProxy {
 		super.register();
 		MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
 	}
+
+    @Override
+    public EntityPlayer getPlayer(){
+        return FMLClientHandler.instance().getClient().thePlayer;
+    }
 }
