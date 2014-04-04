@@ -3,8 +3,12 @@
 
 !.gitignore
 !build.gradle
+!/gradle/
+!gradle*
 !mcmod.info
 !pack.mcmeta
 !assets/*
 !genericskill/*
 !skillapi/*
+!*update.xml
+!*changelog.md

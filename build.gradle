@@ -19,8 +19,8 @@ minecraft {
     version = "1.7.2-10.12.0.1032"
     assetDir = "eclipse/assets"
 }
-version = "0.1(1.7.2)"
-archivesBaseName = project.projectDir.name
+version = "0.1"
+archivesBaseName = "SkillAPI+GenericPack"
 sourceSets.main.java{srcDirs project.projectDir.getPath() include("skillapi/**" , "genericskill/**")}
 sourceSets.main.resources{srcDirs project.projectDir.getPath() include("assets/**", "mcmod.info" , "pack.mcmeta")}
 processResources {
@@ -36,7 +36,7 @@ processResources {
     }
 }
 jar {
-//Keep the jar as clean as possible
+    //Keep the jar as clean as possible
     includeEmptyDirs = false
 }
 task unJar(type:Copy, dependsOn:'build')
@@ -46,13 +46,13 @@ unJar{
 }
 task buildAPI(type:Jar, dependsOn:'unJar')
 buildAPI{
-    baseName = "SkillAPI"
+    archiveName = "SkillAPI" + "-" + version + "("+minecraft.version+")."+extension
     from 'build/unjar'
     include('assets/skillapi/**', 'skillapi/**', 'pack.mcmeta', 'mcmod.info')
 }
 task buildPack(type:Jar, dependsOn:'unJar')
 buildPack{
-    baseName = "GenericSkill Pack"
+    archiveName = "GenericSkill Pack" + "-" + version + "("+minecraft.version+")."+extension
     from 'build/unjar'
     include('assets/genericskill/**', 'genericskill/**')
 }

@@ -1,5 +1,7 @@
 package genericskill;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -14,7 +16,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@Mod(modid = "genericskills", name = "Generic Skills Pack", version = "0.1", dependencies = "required-after:skillapi")
+@Mod(modid = "genericskills", name = "Generic Skills Pack", useMetadata = true)
 public class GenericSkills {
 	public static final String[] skills = { "Creeper Blast", "Levitate", "Summon Wolf", "Super Jump", "Healing Breeze", "Binding Signet", "Unrelenting Force", "Barrage" };
 	public static Item genSkillBook, heritageAmulet, manaPotion;
@@ -51,5 +53,15 @@ public class GenericSkills {
         GameRegistry.registerItem(heritageAmulet, "Heritage Amulet");
         manaPotion = (new ItemManaPotion(5)).setCreativeTab(customTab);
         GameRegistry.registerItem(manaPotion, "Mana Potion");
+        if(event.getSourceFile().getName().endsWith(".jar") && event.getSide().isClient()){
+            try {
+                Class.forName("mods.mud.ModUpdateDetector").getDeclaredMethod("registerMod", ModContainer.class, String.class, String.class).invoke(null,
+                        FMLCommonHandler.instance().findContainerFor(this),
+                        "https://raw.github.com/GotoLink/SkillAPI/master/Pack_update.xml",
+                        "https://raw.github.com/GotoLink/SkillAPI/master/Pack_changelog.md"
+                );
+            } catch (Throwable e) {
+            }
+        }
     }
 }

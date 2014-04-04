@@ -1,7 +1,9 @@
 package skillapi;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -13,7 +15,7 @@ import skillapi.packets.SkillPacketHandler;
 import java.util.HashMap;
 import java.util.Map;
 
-@Mod(modid = "skillapi", name = "Skill API", version = "0.1")
+@Mod(modid = "skillapi", name = "Skill API", useMetadata = true)
 public final class SkillAPI {
 	@SidedProxy(modId = "skillapi", clientSide = "skillapi.client.SkillAPIClientProxy", serverSide = "skillapi.SkillAPIProxy")
 	public static SkillAPIProxy proxy;
@@ -27,6 +29,16 @@ public final class SkillAPI {
             channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(SkillPacketHandler.CHANNELS[i]);
             channel.register(new SkillPacketHandler());
             channels.put(SkillPacketHandler.CHANNELS[i], channel);
+        }
+        if(event.getSourceFile().getName().endsWith(".jar") && event.getSide().isClient()){
+            try {
+                Class.forName("mods.mud.ModUpdateDetector").getDeclaredMethod("registerMod", ModContainer.class, String.class, String.class).invoke(null,
+                        FMLCommonHandler.instance().findContainerFor(this),
+                        "https://raw.github.com/GotoLink/SkillAPI/master/API_update.xml",
+                        "https://raw.github.com/GotoLink/SkillAPI/master/API_changelog.md"
+                );
+            } catch (Throwable e) {
+            }
         }
     }
 
