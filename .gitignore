@@ -10,5 +10,7 @@
 !assets/*
 !genericskill/*
 !skillapi/*
+!/api_info/
+!/pack_info/
 !*update.xml
 !*changelog.md

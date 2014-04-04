@@ -16,7 +16,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@Mod(modid = "genericskills", name = "Generic Skills Pack", useMetadata = true)
+@Mod(modid = "genericskills", name = "Generic Skills Pack", useMetadata = true, dependencies = "required-after:skillapi")
 public class GenericSkills {
 	public static final String[] skills = { "Creeper Blast", "Levitate", "Summon Wolf", "Super Jump", "Healing Breeze", "Binding Signet", "Unrelenting Force", "Barrage" };
 	public static Item genSkillBook, heritageAmulet, manaPotion;
