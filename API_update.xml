@@ -1,14 +1,14 @@
 <mod modid="skillapi">
     <mcVersion version="1.7.2">
         <release type="release" version="0.1"
-                 url="http://www.minecraftforum.net/topic/1651891-"
+                 url="http://www.minecraftforum.net/topic/1651891-/#SkillAPI"
                  download="http://www.mediafire.com/download/zoxqtihkgo9hbtt/SkillAPI-0.1(1.7.2).jar"
                  md5="C9E1B392FCD7CD43CC6F8545EBBD7562"
                 />
     </mcVersion>
 	<mcVersion version="1.6.4">
         <release type="release" version="0.1"
-                 url="http://www.minecraftforum.net/topic/1651891-"
+                 url="http://www.minecraftforum.net/topic/1651891-/#SkillAPI"
                  download="http://www.mediafire.com/download/j4dm5xbg5wqx4w9/SkillAPI_0.1(1.6.X).zip"
                  md5="F419DDAB4AD60A7AFBAE6E8C07D4EDF2"
                 />

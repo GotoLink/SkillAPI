@@ -1,14 +1,14 @@
 <mod modid="genericskills">
     <mcVersion version="1.7.2">
         <release type="release" version="0.1"
-                 url="http://www.minecraftforum.net/topic/1651891-"
+                 url="http://www.minecraftforum.net/topic/1651891-/#SkillAPI"
                  download="http://www.mediafire.com/download/ho8mizos3a5204q/GenericSkill%20Pack-0.1(1.7.2).jar"
                  md5="08574DAC127EA78ED33DD11CB6D9A3AD"
                 />
     </mcVersion>
 	<mcVersion version="1.6.4">
         <release type="release" version="0.1"
-                 url="http://www.minecraftforum.net/topic/1651891-"
+                 url="http://www.minecraftforum.net/topic/1651891-/#SkillAPI"
                  download="http://www.mediafire.com/download/1d6l6v2e8t7phg2/GenericSkillPack_0.1(1.6.X).zip"
                  md5="68BEBC83AE1A5616074331654BE9AFD0"
                 />
