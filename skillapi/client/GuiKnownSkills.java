@@ -19,7 +19,7 @@ import skillapi.packets.UpdateSkillPacket;
 
 public class GuiKnownSkills extends GuiScreen {
 	private EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-	private PlayerSkills skills;
+	private final PlayerSkills skills;
 	private String[] skillKeys = new String[5];
 	private boolean isScrollPressed = false;
 	private int scrollPos = 0; //up to 93

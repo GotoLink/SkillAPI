@@ -14,7 +14,7 @@ public class SkillRegistry {
 	 * @return an immutable map of the currently registered skills
 	 */
 	public static Map<String, Skill> getSkillMap() {
-		return ImmutableMap.<String, Skill> copyOf(skillMap);
+		return ImmutableMap.copyOf(skillMap);
 	}
 
 	/**

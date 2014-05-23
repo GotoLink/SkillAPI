@@ -12,7 +12,7 @@ import skillapi.packets.LearnSkillPacket;
 import skillapi.packets.SkillPacket;
 
 public class HudSkills {
-	private Minecraft game;
+	private final Minecraft game;
 	private PlayerSkills player = null;
 	public int skillGetTimer = 50;
 
@@ -101,7 +101,7 @@ public class HudSkills {
 		Iterator<String> itr = player.activeSkills.iterator();
 		for (int i = 0; i < player.activeSkills.size(); i++) {
 			xOffset = ((scaledWidth - 22 - ((player.activeSkills.size() - 1) * 22)) / 2) + (22 * i);
-			skill = SkillRegistry.get((String) itr.next());
+			skill = SkillRegistry.get(itr.next());
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			game.renderEngine.bindTexture(GuiKnownSkills.GUI);
 			game.ingameGUI.drawTexturedModalRect(xOffset, 0, 218, 102, 22, 20);

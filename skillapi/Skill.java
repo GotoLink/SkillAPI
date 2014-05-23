@@ -160,7 +160,7 @@ public abstract class Skill {
 	 * 
 	 * @param player
 	 */
-	private final void startSkillTimer(EntityPlayer player) {
+	private void startSkillTimer(EntityPlayer player) {
 		Map<String, int[]> playerSkillMap = SkillTickHandler.get(player);
 		int[] data = SkillTickHandler.getData(player, this);
 		data[2] = 1;
@@ -172,7 +172,7 @@ public abstract class Skill {
 	 * 
 	 * @param player
 	 */
-	private final void startCooldown(EntityPlayer player) {
+	private void startCooldown(EntityPlayer player) {
 		Map<String, int[]> playerSkillMap = SkillTickHandler.get(player);
 		int[] data = SkillTickHandler.getData(player, this);
 		data[1] = 1;

@@ -117,9 +117,7 @@ public class InitSkillPacket extends SkillPacket {
 			for (String sk : active) {
 				skills.activeSkills.add(sk);
 			}
-			for (int i = 0; i < bar.length; i++) {
-				skills.skillBar[i] = bar[i];
-			}
+            System.arraycopy(bar, 0, skills.skillBar, 0, bar.length);
 			SkillAPI.proxy.updateKeyBindingTypes(player);
 		}
         return false;

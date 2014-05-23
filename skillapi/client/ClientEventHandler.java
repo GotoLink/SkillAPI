@@ -7,8 +7,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
 public class ClientEventHandler {
-	private Minecraft game = Minecraft.getMinecraft();
-	private HudSkills skillsHUD = new HudSkills(game);
+	private final Minecraft game = Minecraft.getMinecraft();
+	private final HudSkills skillsHUD = new HudSkills(game);
 
 	@SubscribeEvent
 	public void renderHUD(RenderGameOverlayEvent.Post event) {

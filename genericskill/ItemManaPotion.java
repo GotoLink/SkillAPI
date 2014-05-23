@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import skillapi.PlayerSkills;
 
 public class ItemManaPotion extends Item {
-	private int restoreAmount;
+	private final int restoreAmount;
 
 	/* Items can use mana too! */
 	public ItemManaPotion(int restoreAmount) {
