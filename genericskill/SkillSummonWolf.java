@@ -45,7 +45,7 @@ public class SkillSummonWolf extends SkillGeneric {
 			wolf.setAttackTarget(null);
 			wolf.setSitting(false);
 			wolf.setHealth(20);
-			wolf.setOwner(player.getCommandSenderName());
+			wolf.func_152115_b(player.getUniqueID().toString());
 			player.worldObj.setEntityState(wolf, (byte) 7);
 			player.worldObj.spawnEntityInWorld(wolf);
 		}
