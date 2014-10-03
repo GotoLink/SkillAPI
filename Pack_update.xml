@@ -1,4 +1,11 @@
 <mod modid="genericskills">
+    <mcVersion version="1.7.10">
+        <release type="release" version="0.1"
+                 url="http://www.minecraftforum.net/topic/1651891-/#SkillAPI"
+                 download="http://www.mediafire.com/download/63t869muin91w44/GenericSkill_Pack-0.1(1.7.10).jar"
+                 md5="FF0D3F1E978E5A03B8BB9CEE53A02535"
+                />
+    </mcVersion>
     <mcVersion version="1.7.2">
         <release type="release" version="0.1"
                  url="http://www.minecraftforum.net/topic/1651891-/#SkillAPI"

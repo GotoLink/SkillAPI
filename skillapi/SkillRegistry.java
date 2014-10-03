@@ -97,11 +97,7 @@ public class SkillRegistry {
 	 */
 	public static boolean isSkillKnown(EntityPlayer player, String name) {
 		if (PlayerSkills.get(player) != null) {
-			for (String skill : PlayerSkills.get(player).knownSkills) {
-				if (skill.equals(name)) {
-					return true;
-				}
-			}
+			return PlayerSkills.get(player).knownSkills.contains(name);
 		}
 		return false;
 	}
@@ -134,11 +130,7 @@ public class SkillRegistry {
 	 */
 	public static boolean isSkillActive(EntityPlayer player, String name) {
 		if (PlayerSkills.get(player) != null) {
-			for (String skill : PlayerSkills.get(player).activeSkills) {
-				if (skill.equals(name)) {
-					return true;
-				}
-			}
+			return PlayerSkills.get(player).activeSkills.contains(name);
 		}
 		return false;
 	}

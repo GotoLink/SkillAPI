@@ -1,4 +1,11 @@
 <mod modid="skillapi">
+    <mcVersion version="1.7.10">
+        <release type="release" version="0.1"
+                 url="http://www.minecraftforum.net/topic/1651891-/#SkillAPI"
+                 download="http://www.mediafire.com/download/nirmtds4qs3gk5i/SkillAPI-0.1(1.7.10).jar"
+                 md5="5D75FE8A2942057E71C4B427B3F10FC1"
+                />
+    </mcVersion>
     <mcVersion version="1.7.2">
         <release type="release" version="0.1"
                  url="http://www.minecraftforum.net/topic/1651891-/#SkillAPI"
