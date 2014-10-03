@@ -5,8 +5,6 @@ import java.util.Random;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class SkillHealingBreeze extends SkillGeneric {
-	private Random rand = new Random();
-
 	@Override
 	public String getDescription() {
 		return "If your health is less than 2\nhearts, you're instantly healed 2\nhearts. Then for 10 seconds,\nyou're randomly healed half a\nheart at a time.";
@@ -41,7 +39,7 @@ public class SkillHealingBreeze extends SkillGeneric {
 
 	@Override
 	public void onTickWhileActive(EntityPlayer player) {
-		if (player.getHealth() < 20 && rand.nextFloat() > 0.9)
+		if (player.getHealth() < 20 && player.getRNG().nextFloat() > 0.9)
 			player.heal(1);
 	}
 }

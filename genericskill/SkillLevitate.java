@@ -1,6 +1,9 @@
 package genericskill;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.play.server.S12PacketEntityVelocity;
+import net.minecraft.world.WorldServer;
 
 public class SkillLevitate extends SkillGeneric {
 	@Override
@@ -33,5 +36,8 @@ public class SkillLevitate extends SkillGeneric {
 		player.addVelocity(0.0D, 0.1D, 0.0D);
 		if (player.fallDistance > 0)
 			player.fallDistance = 0;
+        if(player.worldObj instanceof WorldServer){
+            ((WorldServer) player.worldObj).getEntityTracker().func_151248_b(player, new S12PacketEntityVelocity(player));
+        }
 	}
 }

@@ -8,8 +8,6 @@ import net.minecraft.init.Items;
 import net.minecraft.world.World;
 
 public class SkillBarrage extends SkillGeneric {
-	Random rand = new Random();
-
 	@Override
 	public String getDescription() {
 		return "Fires a shower of up to 5\narrows all at once. Its strength\nand spread is affected by your\nlevel.\n(requires a bow and at least 2\narrows)";
@@ -41,10 +39,10 @@ public class SkillBarrage extends SkillGeneric {
 			return false;
 		World world = player.worldObj;
 		float shotStrength = (player.experienceLevel + 1) / 1.7F;
-		world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
+		world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (player.getRNG().nextFloat() * 0.4F + 1.2F) + 0.5F);
 		for (int i = 0; i < 5; i++)
 			if (player.inventory.consumeInventoryItem(Items.arrow) && !world.isRemote)
-				world.spawnEntityInWorld(new EntityArrow(world, player, shotStrength - (rand.nextFloat() * rand.nextFloat() * rand.nextFloat())));
+				world.spawnEntityInWorld(new EntityArrow(world, player, shotStrength - (player.getRNG().nextFloat() * player.getRNG().nextFloat() * player.getRNG().nextFloat())));
 		return true;
 	}
 }

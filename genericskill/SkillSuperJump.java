@@ -1,8 +1,10 @@
 package genericskill;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.WorldServer;
 
 public class SkillSuperJump extends SkillGeneric {
 	@Override
@@ -42,6 +44,9 @@ public class SkillSuperJump extends SkillGeneric {
 			}
 			player.isAirBorne = true;
 		}
+        if(player.worldObj instanceof WorldServer){
+            ((WorldServer) player.worldObj).getEntityTracker().func_151248_b(player, new S12PacketEntityVelocity(player));
+        }
 		return true;
 	}
 }
