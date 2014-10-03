@@ -16,11 +16,12 @@ buildscript {
 }
 apply plugin: 'forge'
 minecraft {
-    version = "1.7.10-10.13.0.1184"
+    version = "1.7.10-10.13.0.1206"
     runDir = "eclipse/assets"
 }
 version = "0.1"
 archivesBaseName = "SkillAPI+GenericPack"
+group = "com.github.skillapi"
 sourceSets.main.java{srcDirs project.projectDir.getPath() include("skillapi/**" , "genericskill/**")}
 sourceSets.main.resources{srcDirs project.projectDir.getPath() include("assets/**")}
 processResources {
