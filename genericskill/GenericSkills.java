@@ -2,7 +2,9 @@ package genericskill;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -48,11 +50,11 @@ public class GenericSkills {
             }
         };
         genSkillBook = new ItemSkillBook().addSkills(skills).setCreativeTab(customTab);
-        GameRegistry.registerItem(genSkillBook, "Generic Skill Book");
+        GameRegistry.registerItem(genSkillBook, "GenericSkillBook");
         heritageAmulet = new ItemHeritageAmulet().setCreativeTab(customTab);
-        GameRegistry.registerItem(heritageAmulet, "Heritage Amulet");
+        GameRegistry.registerItem(heritageAmulet, "HeritageAmulet");
         manaPotion = (new ItemManaPotion(5)).setCreativeTab(customTab);
-        GameRegistry.registerItem(manaPotion, "Mana Potion");
+        GameRegistry.registerItem(manaPotion, "ManaPotion");
         if(event.getSourceFile().getName().endsWith(".jar") && event.getSide().isClient()){
             try {
                 Class.forName("mods.mud.ModUpdateDetector").getDeclaredMethod("registerMod", ModContainer.class, String.class, String.class).invoke(null,
@@ -61,6 +63,17 @@ public class GenericSkills {
                         "https://raw.github.com/GotoLink/SkillAPI/master/Pack_changelog.md"
                 );
             } catch (Throwable e) {
+            }
+        }
+    }
+
+    @EventHandler
+    public void remap(FMLMissingMappingsEvent event){
+        for(FMLMissingMappingsEvent.MissingMapping missingMapping:event.get()){
+            switch(missingMapping.type){
+                case ITEM:
+                    missingMapping.remap(GameData.getItemRegistry().getObject(missingMapping.name.replace(" ", "")));
+                    break;
             }
         }
     }
