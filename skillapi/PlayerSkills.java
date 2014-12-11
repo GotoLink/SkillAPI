@@ -1,10 +1,5 @@
 package skillapi;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +10,12 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 import skillapi.packets.LearnSkillPacket;
 import skillapi.packets.SkillPacket;
 
-public class PlayerSkills implements IExtendedEntityProperties {
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+public final class PlayerSkills implements IExtendedEntityProperties {
 	public List<String> knownSkills = new ArrayList<String>();
 	public List<String> activeSkills = new LinkedList<String>();
 	public Skill[] skillBar = new Skill[5];

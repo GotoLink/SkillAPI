@@ -1,10 +1,5 @@
 package skillapi;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -18,9 +13,17 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import skillapi.packets.InitSkillPacket;
 import skillapi.packets.SkillPacket;
 
-public class PlayerEventHandler {
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+public final class PlayerEventHandler {
+    public static final PlayerEventHandler INSTANCE = new PlayerEventHandler();
 	public Map<UUID, List<String>> knownSkillsBackup = new HashMap<UUID, List<String>>();
 	public Map<UUID, Skill[]> skillBarBackup = new HashMap<UUID, Skill[]>();
+
+    private PlayerEventHandler(){}
 
 	@SubscribeEvent
 	public void onConstructing(EntityConstructing event) {

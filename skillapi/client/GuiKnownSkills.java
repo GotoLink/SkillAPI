@@ -5,11 +5,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-
 import skillapi.PlayerSkills;
 import skillapi.Skill;
 import skillapi.SkillAPI;
@@ -17,7 +15,7 @@ import skillapi.SkillRegistry;
 import skillapi.packets.SkillPacket;
 import skillapi.packets.UpdateSkillPacket;
 
-public class GuiKnownSkills extends GuiScreen {
+public final class GuiKnownSkills extends GuiScreen {
 	private EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 	private final PlayerSkills skills;
 	private String[] skillKeys = new String[5];

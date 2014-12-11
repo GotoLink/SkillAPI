@@ -1,13 +1,13 @@
 package genericskill;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import skillapi.SkillRegistry;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class ItemSkillBook extends Item {
 	private Collection<String> skills = new ArrayList<String>();

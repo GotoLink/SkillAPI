@@ -1,9 +1,5 @@
 package skillapi.packets;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.google.common.base.Charsets;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,6 +7,10 @@ import skillapi.PlayerSkills;
 import skillapi.Skill;
 import skillapi.SkillAPI;
 import skillapi.SkillRegistry;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class InitSkillPacket extends SkillPacket {
 	private int id;

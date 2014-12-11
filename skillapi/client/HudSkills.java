@@ -1,23 +1,21 @@
 package skillapi.client;
 
-import java.util.Iterator;
-
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.Minecraft;
-
 import org.lwjgl.opengl.GL11;
-
 import skillapi.*;
 import skillapi.packets.LearnSkillPacket;
 import skillapi.packets.SkillPacket;
 
-public class HudSkills {
+import java.util.Iterator;
+
+public final class HudSkills {
 	private final Minecraft game;
 	private PlayerSkills player = null;
 	public int skillGetTimer = 50;
 
-	public HudSkills(Minecraft game) {
-		this.game = game;
+	public HudSkills() {
+		this.game = Minecraft.getMinecraft();
 	}
 
 	public void drawHUD(int scaledWidth, int scaledHeight, float partialTicks) {

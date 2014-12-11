@@ -1,13 +1,12 @@
 package skillapi;
 
+import com.google.common.collect.ImmutableMap;
+import net.minecraft.entity.player.EntityPlayer;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.entity.player.EntityPlayer;
-
-import com.google.common.collect.ImmutableMap;
-
-public class SkillRegistry {
+public final class SkillRegistry {
 	private static Map<String, Skill> skillMap = new HashMap<String, Skill>();
 
 	/**

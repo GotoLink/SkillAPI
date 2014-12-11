@@ -1,13 +1,13 @@
 package skillapi;
 
-import java.util.List;
-
 import net.minecraft.command.CommandGive;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 
-public class SkillCommand extends CommandGive {
+import java.util.List;
+
+public final class SkillCommand extends CommandGive {
 	@Override
 	public List addTabCompletionOptions(ICommandSender sender, String[] command) {
 		if (command.length == 2) {

@@ -7,14 +7,15 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
 public class ClientEventHandler {
-	private final Minecraft game = Minecraft.getMinecraft();
-	private final HudSkills skillsHUD = new HudSkills(game);
+    public static final ClientEventHandler INSTANCE = new ClientEventHandler();
+	private final HudSkills skillsHUD = new HudSkills();
+    private ClientEventHandler(){}
 
 	@SubscribeEvent
 	public void renderHUD(RenderGameOverlayEvent.Post event) {
 		if (event.type == ElementType.AIR) {
 			skillsHUD.drawHUD(event.resolution.getScaledWidth(), event.resolution.getScaledHeight(), event.partialTicks);
-			game.renderEngine.bindTexture(Gui.icons);
+            Minecraft.getMinecraft().getTextureManager().bindTexture(Gui.icons);
 		}
 	}
 }

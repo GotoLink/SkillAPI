@@ -1,7 +1,5 @@
 package genericskill;
 
-import java.util.Random;
-
 import net.minecraft.entity.player.EntityPlayer;
 
 public class SkillHealingBreeze extends SkillGeneric {

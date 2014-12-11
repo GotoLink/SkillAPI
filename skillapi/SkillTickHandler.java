@@ -1,8 +1,5 @@
 package skillapi;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -13,9 +10,18 @@ import skillapi.packets.ManaSpentPacket;
 import skillapi.packets.SkillPacket;
 import skillapi.packets.TickDataSkillPacket;
 
-public class SkillTickHandler {
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
+public final class SkillTickHandler {
+    public static final SkillTickHandler INSTANCE = new SkillTickHandler();
 	public static Map<UUID, Map<String, int[]>> timers = new ConcurrentHashMap<UUID, Map<String, int[]>>();//username->skill->charge, cooldown, duration timers
 	public final static int mult = 10;
+
+    private SkillTickHandler(){}
 
 	@SubscribeEvent
 	public void tickEnd(TickEvent.PlayerTickEvent event) {

@@ -1,9 +1,9 @@
 package skillapi;
 
-import java.util.Map;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.Map;
 
 public abstract class Skill {
 	public int charge;

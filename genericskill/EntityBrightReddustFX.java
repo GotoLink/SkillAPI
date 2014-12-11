@@ -1,9 +1,9 @@
 package genericskill;
 
-import net.minecraft.client.particle.EntityReddustFX;
-import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.particle.EntityReddustFX;
+import net.minecraft.world.World;
 
 @SideOnly(Side.CLIENT)
 public class EntityBrightReddustFX extends EntityReddustFX {

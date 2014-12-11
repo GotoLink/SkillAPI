@@ -1,14 +1,14 @@
 package skillapi.packets;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.network.NetHandlerPlayServer;
 import skillapi.SkillAPI;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SkillPacketHandler {
 	public static final String[] CHANNELS = {"APISKILLINIT", "APISKILLGET", "APISKILLUPDATE", "APISKILLTRIGGER", "APISKILLACTIVATE", "APISKILLTICK", "APISKILLMANA"};

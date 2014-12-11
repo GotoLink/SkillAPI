@@ -12,10 +12,9 @@ public class SkillAPIProxy {
 	}
 
 	public void register() {
-		FMLCommonHandler.instance().bus().register(new SkillTickHandler());
-		PlayerEventHandler playerEvent = new PlayerEventHandler();
-		MinecraftForge.EVENT_BUS.register(playerEvent);
-        FMLCommonHandler.instance().bus().register(playerEvent);
+		FMLCommonHandler.instance().bus().register(SkillTickHandler.INSTANCE);
+		MinecraftForge.EVENT_BUS.register(PlayerEventHandler.INSTANCE);
+        FMLCommonHandler.instance().bus().register(PlayerEventHandler.INSTANCE);
 	}
 
     public EntityPlayer getPlayer(){
