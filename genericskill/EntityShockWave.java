@@ -1,12 +1,12 @@
 package genericskill;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class EntityShockWave extends Entity {
 	}
 
 	protected void collideWithNearbyEntities() {
-		List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(owner, this.boundingBox.expand(1.0D, 1.0D, 1.0D));
+		List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(owner, this.getEntityBoundingBox().expand(1.0D, 1.0D, 1.0D));
 		if (list != null && !list.isEmpty()) {
 			for (Entity entity: list) {
 				if (entity.canBePushed()) {

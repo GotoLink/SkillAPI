@@ -13,7 +13,6 @@ public class ItemManaPotion extends Item {
 	public ItemManaPotion(int restoreAmount) {
 		super();
 		setUnlocalizedName("manaPotion");
-		setTextureName("genericskill:manapotion");
 		setMaxStackSize(16);
 		this.restoreAmount = restoreAmount;
 	}

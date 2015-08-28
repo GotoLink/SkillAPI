@@ -1,11 +1,11 @@
 package skillapi.client;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.lwjgl.input.Keyboard;
 import skillapi.PlayerSkills;
 import skillapi.Skill;
@@ -22,8 +22,8 @@ public class SkillAPIClientProxy extends SkillAPIProxy {
 		for (int i = 1; i < keys.length; i++) {
 			skillKeyBindings[i - 1] = new KeyBinding("key.skill" + i, Keyboard.getKeyIndex(Character.toString(keys[i])), "key.categories.gameplay");
 		}
-		for (int i = 0; i < skillKeyBindings.length; i++) {
-            SkillAPIKeyHandler.INSTANCE.addKeyBinding(skillKeyBindings[i], false);
+		for (KeyBinding binding : skillKeyBindings) {
+			SkillAPIKeyHandler.INSTANCE.addKeyBinding(binding, false);
 		}
         for(KeyBinding key:SkillAPIKeyHandler.INSTANCE.keyBindings){
 		    ClientRegistry.registerKeyBinding(key);

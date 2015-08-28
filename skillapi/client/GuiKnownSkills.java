@@ -1,10 +1,10 @@
 package skillapi.client;
 
-import cpw.mods.fml.relauncher.Side;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -15,18 +15,21 @@ import skillapi.SkillRegistry;
 import skillapi.packets.SkillPacket;
 import skillapi.packets.UpdateSkillPacket;
 
+import java.io.IOException;
+
 public final class GuiKnownSkills extends GuiScreen {
-	private EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+
 	private final PlayerSkills skills;
-	private String[] skillKeys = new String[5];
+	private final String[] skillKeys = new String[5];
 	private boolean isScrollPressed = false;
+	private static final int scrollMax = 93;
 	private int scrollPos = 0; //up to 93
 	private Skill heldSkill;
 	public static final ResourceLocation GUI = new ResourceLocation("skillapi", "skillsgui.png");
 
-	public GuiKnownSkills(PlayerSkills player) {
+	public GuiKnownSkills() {
 		super();
-		this.skills = player;
+		this.skills = PlayerSkills.get(player());
         allowUserInput = true;
 		for (int i = 0; i < skillKeys.length; i++) {
 			skillKeys[i] = Keyboard.getKeyName(SkillAPIClientProxy.skillKeyBindings[i].getKeyCode());
@@ -40,23 +43,23 @@ public final class GuiKnownSkills extends GuiScreen {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		GL11.glEnable(3042 /* GL_BLEND */);
+		GlStateManager.enableBlend();
         drawDefaultBackground();
 		drawGUIBackground();
 		drawScroll(mouseY);
 		drawSkillBar(mouseX, mouseY);
 		drawSkillList(mouseX, mouseY);
 		drawHeldSkill(mouseX, mouseY);
-		GL11.glDisable(3042 /* GL_BLEND */);
+		GlStateManager.disableBlend();
 	}
 
 	private void drawGUIBackground() {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(GUI);
-		drawTexturedModalRect((width - 206) / 2, (height - 134) / 2, 0, 0, 206, 134);
+		mc.getTextureManager().bindTexture(GUI);
+		drawTexturedModalRect(width / 2 - 103, height / 2 - 67, 0, 0, 206, 134);
 		fontRendererObj.drawStringWithShadow("Known Skills", width / 2 - 73, height / 2 - 61, 0xFCFC80);
 		for (int i = 0; i < skillKeys.length; i++)
-			fontRendererObj.drawString(skillKeys[i], width / 2 - 90, (height / 2 - 40) + (21 * i), 0xE2E2E9);
+			fontRendererObj.drawString(skillKeys[i], width / 2 - 90, height / 2 - 40 + (21 * i), 0xE2E2E9);
 	}
 
 	private void drawSkillBar(int mouseX, int mouseY) {
@@ -64,7 +67,7 @@ public final class GuiKnownSkills extends GuiScreen {
 		for (int i = 0; i < skills.skillBar.length; i++)
 			if (skills.skillBar[i] != null) {
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-				mc.renderEngine.bindTexture(skills.skillBar[i].getTexture());
+				mc.getTextureManager().bindTexture(skills.skillBar[i].getTexture());
 				GL11.glScalef(0.0625F, 0.0625F, 1F);
 				drawTexturedModalRect((posX = (width / 2 - 96)) * 16, (posY = ((height / 2 - 45) + (21 * i))) * 16, 0, 0, 256, 256);
 				GL11.glScalef(16F, 16F, 1F);
@@ -74,22 +77,21 @@ public final class GuiKnownSkills extends GuiScreen {
 	}
 
 	private void drawSkillList(int mouseX, int mouseY) {
-		int posX, posY, offset = Math.round((scrollPos * (skills.knownSkills.size() - 5)) / 93);
-		offset = offset < 0 ? 0 : offset;
+		int posX = (width / 2 - 71), posY, offset = getOffset();
 		for (int i = offset; i < offset + 5 && i < skills.knownSkills.size(); i++) {
-			drawSkillInfo(SkillRegistry.get(skills.knownSkills.get(i)), i, posX = (width / 2 - 71), posY = (height / 2 - 45 + (21 * (i - offset))));
+			drawSkillInfo(SkillRegistry.get(skills.knownSkills.get(i)), i, posX, posY = (height / 2 - 45 + (21 * (i - offset))));
 			if (!Mouse.isButtonDown(0) && isMouseOverArea(mouseX, mouseY, posX, posY, 16, 16))
 				drawGradientRect(posX, posY, posX + 16, posY + 16, 0x80BCC4D0, 0x80293445);
 		}
 		for (int i = offset; i < offset + 5 && i < skills.knownSkills.size(); i++)
-			if (!Mouse.isButtonDown(0) && isMouseOverArea(mouseX, mouseY, width / 2 - 71, height / 2 - 45 + (21 * (i - offset)), 16, 16))
+			if (!Mouse.isButtonDown(0) && isMouseOverArea(mouseX, mouseY, posX, height / 2 - 45 + (21 * (i - offset)), 16, 16))
 				drawToolTip(SkillRegistry.get(skills.knownSkills.get(i)), mouseX, mouseY);
 	}
 
 	private void drawSkillInfo(Skill skill, int i, int x, int y) {
 		if (skill != null) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			mc.renderEngine.bindTexture(SkillRegistry.get(skills.knownSkills.get(i)).getTexture());
+			mc.getTextureManager().bindTexture(SkillRegistry.get(skills.knownSkills.get(i)).getTexture());
 			GL11.glScalef(0.0625F, 0.0625F, 1F);
 			drawTexturedModalRect(x * 16, y * 16, 0, 0, 256, 256);
 			GL11.glScalef(16F, 16F, 1F);
@@ -99,32 +101,32 @@ public final class GuiKnownSkills extends GuiScreen {
 	}
 
 	private void drawSkillStats(Skill skill, int x, int y) {
-		if (skill.getManaCost(player) > 0) {
+		if (skill.getManaCost(player()) > 0) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			mc.renderEngine.bindTexture(GUI);
+			mc.getTextureManager().bindTexture(GUI);
 			drawTexturedModalRect(x, y, 104, 134, 9, 9);
-			fontRendererObj.drawString(String.valueOf(skill.getManaCost(player)), x + 10, y + 1, 0xCFFFDF);
+			fontRendererObj.drawString(String.valueOf(skill.getManaCost(player())), x + 10, y + 1, 0xCFFFDF);
 			x += 25;
 		}
-		if (skill.getChargeupTime(player) > 0) {
+		if (skill.getChargeupTime(player()) > 0) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			mc.renderEngine.bindTexture(GUI);
+			mc.getTextureManager().bindTexture(GUI);
 			drawTexturedModalRect(x, y, 113, 134, 9, 9);
-			fontRendererObj.drawString(String.valueOf(skill.getChargeupTime(player)), x + 10, y + 1, 0xCFFFDF);
+			fontRendererObj.drawString(String.valueOf(skill.getChargeupTime(player())), x + 10, y + 1, 0xCFFFDF);
 			x += 34;
 		}
-		if (skill.getCooldownTime(player) > 0) {
+		if (skill.getCooldownTime(player()) > 0) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			mc.renderEngine.bindTexture(GUI);
+			mc.getTextureManager().bindTexture(GUI);
 			drawTexturedModalRect(x, y, 122, 134, 9, 9);
-			fontRendererObj.drawString(String.valueOf(skill.getCooldownTime(player)), x + 10, y + 1, 0xCFFFDF);
+			fontRendererObj.drawString(String.valueOf(skill.getCooldownTime(player())), x + 10, y + 1, 0xCFFFDF);
 			x += 34;
 		}
-		if (skill.getDuration(player) > 0) {
+		if (skill.getDuration(player()) > 0) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			mc.renderEngine.bindTexture(GUI);
+			mc.getTextureManager().bindTexture(GUI);
 			drawTexturedModalRect(x, y, 131, 134, 9, 9);
-			fontRendererObj.drawString(String.valueOf(skill.getDuration(player)), x + 10, y + 1, 0xCFFFDF);
+			fontRendererObj.drawString(String.valueOf(skill.getDuration(player())), x + 10, y + 1, 0xCFFFDF);
 		}
 	}
 
@@ -132,14 +134,14 @@ public final class GuiKnownSkills extends GuiScreen {
 		if (skill != null) {
 			mouseX += 9;
 			String desc[] = skill.getDescription().split("\n");
-			GL11.glEnable(3042 /* GL_BLEND */);
+			GlStateManager.enableBlend();
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.8F);
-			mc.renderEngine.bindTexture(GUI);
+			mc.getTextureManager().bindTexture(GUI);
 			drawTexturedModalRect(mouseX, mouseY, 0, 184, 175, 15);
 			for (int i = 0; i < desc.length; i++)
 				drawTexturedModalRect(mouseX, mouseY + 15 + (9 * i), 0, 188, 175, 9);
 			drawTexturedModalRect(mouseX, mouseY + 15 + (9 * desc.length), 0, 198, 175, 3);
-			GL11.glDisable(3042 /* GL_BLEND */);
+			GlStateManager.disableBlend();
 			fontRendererObj.drawStringWithShadow(skill.getType(), mouseX + 5, mouseY + 5, 0xE0BC38);
 			for (int i = 0; i < desc.length; i++) {
 				fontRendererObj.drawString(desc[i], mouseX + 5, mouseY + 15 + (9 * i), 0x8FA8FF);
@@ -150,18 +152,17 @@ public final class GuiKnownSkills extends GuiScreen {
 	private void drawScroll(int mouseY) {
 		if (isScrollPressed) {
 			scrollPos = mouseY - 7 - (height / 2 - 49);
-			scrollPos = scrollPos < 0 ? 0 : scrollPos;
-			scrollPos = scrollPos > 93 ? 93 : scrollPos;
+			handleScrollPos();
 		}
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(GUI);
+		mc.getTextureManager().bindTexture(GUI);
 		drawTexturedModalRect(width / 2 + 83, height / 2 - 49 + scrollPos, 206, 0, 12, 15);
 	}
 
 	private void drawHeldSkill(int mouseX, int mouseY) {
 		if (heldSkill != null) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			mc.renderEngine.bindTexture(heldSkill.getTexture());
+			mc.getTextureManager().bindTexture(heldSkill.getTexture());
 			GL11.glScalef(0.0625F, 0.0625F, 1F);
 			drawTexturedModalRect((mouseX - 8) * 16, (mouseY - 8) * 16, 0, 0, 256, 256);
 			GL11.glScalef(16F, 16F, 1F);
@@ -172,14 +173,20 @@ public final class GuiKnownSkills extends GuiScreen {
 		return (mouseX >= posX && mouseX < posX + sizeX && mouseY >= posY && mouseY < posY + sizeY);
 	}
 
+	private void handleScrollPos(){
+		if(scrollPos < 0)
+			scrollPos = 0;
+		else if(scrollPos > scrollMax)
+			scrollPos = scrollMax;
+	}
+
 	@Override
-	public void handleMouseInput() {
+	public void handleMouseInput() throws IOException {
 		super.handleMouseInput();
 		int wheelState = Mouse.getEventDWheel();
 		if (wheelState != 0) {
 			scrollPos += wheelState > 0 ? -8 : 8;
-			scrollPos = scrollPos < 0 ? 0 : scrollPos;
-			scrollPos = scrollPos > 93 ? 93 : scrollPos;
+			handleScrollPos();
 		}
 	}
 
@@ -197,11 +204,10 @@ public final class GuiKnownSkills extends GuiScreen {
 				sendSkillUpdate(i, null);
 				return;
 			}
-		int offset = Math.round((scrollPos * (skills.knownSkills.size() - 5)) / 93);
-		offset = offset < 0 ? 0 : offset;
+		int offset = getOffset();
 		for (int i = offset; i < offset + 5 && i < skills.knownSkills.size(); i++)
 			if (isMouseOverArea(mouseX, mouseY, width / 2 - 71, height / 2 - 45 + (21 * (i - offset)), 16, 16) && skills.knownSkills.get(i) != null) {
-				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
+				if (isShiftKeyDown())
 					for (int j = 0; j < skills.skillBar.length; j++)
 						if (skills.skillBar[j] == null) {
 							sendSkillUpdate(j, skills.knownSkills.get(i));
@@ -212,8 +218,15 @@ public final class GuiKnownSkills extends GuiScreen {
 			}
 	}
 
+	private int getOffset(){
+		int offset = Math.round((scrollPos * (skills.knownSkills.size() - 5)) / scrollMax);
+		if(offset < 0)
+			return  0;
+		return offset;
+	}
+
 	@Override
-	protected void mouseMovedOrUp(int mouseX, int mouseY, int button) {
+	protected void mouseClickMove(int mouseX, int mouseY, int button, long timeSinceLastClick) {
 		if (!Mouse.isButtonDown(0)) {
 			isScrollPressed = false;
 			if (heldSkill != null) {
@@ -228,13 +241,13 @@ public final class GuiKnownSkills extends GuiScreen {
 	}
 
 	private void sendSkillUpdate(int i, String skill) {
-        SkillPacket pkt = new UpdateSkillPacket(player.getEntityId(), i, skill);
+        SkillPacket pkt = new UpdateSkillPacket(player().getEntityId(), i, skill);
 		SkillAPI.channels.get(pkt.getChannel()).sendToServer(pkt.getPacket(Side.SERVER));
 	}
 
 	@Override
 	protected void keyTyped(char key, int keyCode) {
-		if (keyCode == 1 || keyCode == mc.gameSettings.keyBindUseItem.getKeyCode())
+		if (keyCode == 1 || keyCode == mc.gameSettings.keyBindInventory.getKeyCode() || keyCode == SkillAPIClientProxy.skillGuiKeyBinding.getKeyCode())
 			mc.thePlayer.closeScreen();
 	}
 
@@ -246,5 +259,9 @@ public final class GuiKnownSkills extends GuiScreen {
 	@Override
 	public boolean doesGuiPauseGame() {
 		return false;
+	}
+
+	private EntityPlayer player(){
+		return SkillAPI.proxy.getPlayer();
 	}
 }

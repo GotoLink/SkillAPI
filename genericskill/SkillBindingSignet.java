@@ -1,7 +1,7 @@
 package genericskill;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 
 public class SkillBindingSignet extends SkillGeneric {
 	@Override
@@ -36,13 +36,10 @@ public class SkillBindingSignet extends SkillGeneric {
 		if (!player.worldObj.isRemote) {
 			if (!player.worldObj.provider.canRespawnHere())
 				player.travelToDimension(0);
-			ChunkCoordinates chunkcoordinates = player.worldObj.getSpawnPoint();
-			int posX = chunkcoordinates.posX;
-			int posY = chunkcoordinates.posY;
-			int posZ = chunkcoordinates.posZ;
-			while (!player.worldObj.isAirBlock(posX, posY, posZ))
-				posY++; //So you don't spawn in the floor.
-			player.setPositionAndUpdate(posX + 0.5F, posY + 0.1F, posZ + 0.5F);
+			BlockPos pos = player.worldObj.getSpawnPoint();
+			while (!player.worldObj.isAirBlock(pos))
+				pos = pos.up(); //So you don't spawn in the floor.
+			player.setPositionAndUpdate(pos.getX() + 0.5F, pos.getY() + 0.1F, pos.getZ() + 0.5F);
 		}
 		player.inventory.consumeInventoryItem(GenericSkills.heritageAmulet);
 		player.worldObj.playSoundAtEntity(player, "mob.ghast.fireball", 1.0F, 1.0F);

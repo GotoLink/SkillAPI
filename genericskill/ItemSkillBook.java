@@ -19,7 +19,6 @@ public class ItemSkillBook extends Item {
 	public ItemSkillBook() {
 		super();
 		setUnlocalizedName("genSkillBook");
-		setTextureName("genericskill:genskillbook");
 		setMaxStackSize(1);
 	}
 

@@ -1,8 +1,5 @@
 package skillapi;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
@@ -10,6 +7,10 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import skillapi.packets.InitSkillPacket;
 import skillapi.packets.SkillPacket;
 
@@ -34,7 +35,7 @@ public final class PlayerEventHandler {
 		}
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onSpawn(EntityJoinWorldEvent event) {
 		if (event.entity instanceof EntityPlayerMP) {
             SkillPacket pkt = new InitSkillPacket(PlayerSkills.get((EntityPlayer) event.entity));
@@ -52,7 +53,7 @@ public final class PlayerEventHandler {
 		}
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onDeath(LivingDeathEvent event) {
 		if (event.entityLiving instanceof EntityPlayer) {
 			PlayerSkills skills = PlayerSkills.get((EntityPlayer) event.entityLiving);
@@ -64,7 +65,7 @@ public final class PlayerEventHandler {
 		}
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void afterSleepInBed(PlayerSleepInBedEvent event) {
 		if (!event.entityPlayer.worldObj.isRemote && !event.entityPlayer.isPlayerSleeping()) {
 			if (!event.entityPlayer.worldObj.isDaytime() && event.entityPlayer.isEntityAlive() && event.entityPlayer.worldObj.provider.isSurfaceWorld()) {

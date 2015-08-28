@@ -1,8 +1,8 @@
 package skillapi;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class SkillAPIProxy {
 	public void loadSkillKeyBindings() {

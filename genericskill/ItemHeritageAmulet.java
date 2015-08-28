@@ -10,7 +10,6 @@ public class ItemHeritageAmulet extends Item {
 	public ItemHeritageAmulet() {
 		super();
 		setUnlocalizedName("heritageAmulet");
-		setTextureName("genericskill:heritageAmulet");
 		setMaxStackSize(1);
 	}
 

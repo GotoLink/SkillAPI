@@ -1,10 +1,12 @@
 package skillapi.packets;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import skillapi.SkillAPI;
 
 import java.util.HashMap;
@@ -15,25 +17,38 @@ public class SkillPacketHandler {
 
 	@SubscribeEvent
 	public void onServerPacket(FMLNetworkEvent.ServerCustomPacketEvent event) {
-		SkillPacket skpacket = packets.get(event.packet.channel());
+		final SkillPacket skpacket = packets.get(event.packet.channel());
 		if (skpacket != null) {
 			skpacket.fromBytes(event.packet.payload());
-			if(skpacket.run(((NetHandlerPlayServer) event.handler).playerEntity)){
-                FMLProxyPacket proxy = skpacket.getPacket(Side.CLIENT);
-                proxy.setDispatcher(event.packet.getDispatcher());
-                event.reply = proxy;
-            }
+			final EntityPlayerMP player = ((NetHandlerPlayServer) event.handler).playerEntity;
+			addTask(event.handler, new Runnable() {
+				@Override
+				public void run() {
+					if(skpacket.run(player)){
+						SkillAPI.channels.get(skpacket.getChannel()).sendTo(skpacket.getPacket(Side.CLIENT), player);
+					}
+				}
+			});
 		}
 	}
 
     @SubscribeEvent
-    public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent event){
-        SkillPacket skpacket = packets.get(event.packet.channel());
-        if (skpacket != null) {
-            skpacket.fromBytes(event.packet.payload());
-            skpacket.run(SkillAPI.proxy.getPlayer());
-        }
-    }
+    public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent event) {
+		final SkillPacket skpacket = packets.get(event.packet.channel());
+		if (skpacket != null) {
+			skpacket.fromBytes(event.packet.payload());
+			addTask(event.handler, new Runnable() {
+				@Override
+				public void run() {
+					skpacket.run(SkillAPI.proxy.getPlayer());
+				}
+			});
+		}
+	}
+
+	private void addTask(INetHandler netHandler, Runnable runnable){
+		FMLCommonHandler.instance().getWorldThread(netHandler).addScheduledTask(runnable);
+	}
 	
 	public static Map<String, SkillPacket> packets = new HashMap<String, SkillPacket>();
 	static{

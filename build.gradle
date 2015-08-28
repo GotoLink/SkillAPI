@@ -17,13 +17,15 @@ buildscript {
 apply plugin: 'forge'
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
-minecraft {
-    version = "1.7.10-10.13.2.1230"
-    runDir = "eclipse"
-}
 version = "0.1"
 archivesBaseName = "SkillAPI+GenericPack"
 group = "com.github.skillapi"
+minecraft {
+    version = "1.8-11.14.1.1350"
+    runDir = "eclipse"
+    mappings = "snapshot_20150401"
+    replace '$version', version
+}
 sourceSets.main.java{srcDirs project.projectDir.getPath() include("skillapi/**" , "genericskill/**")}
 sourceSets.main.resources{srcDirs project.projectDir.getPath() include("assets/**")}
 processResources {

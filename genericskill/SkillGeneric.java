@@ -19,7 +19,7 @@ public abstract class SkillGeneric extends Skill {
 	}
 
 	public SkillGeneric setTexture(String name) {
-		this.texture = new ResourceLocation("genericskill", "textures/" + name + ".png");
+		this.texture = new ResourceLocation("genericskills", "textures/" + name + ".png");
 		return this;
 	}
 

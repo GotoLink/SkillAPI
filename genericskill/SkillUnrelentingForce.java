@@ -1,10 +1,7 @@
 package genericskill;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 
 public class SkillUnrelentingForce extends SkillGeneric {
 	@Override
@@ -39,11 +36,13 @@ public class SkillUnrelentingForce extends SkillGeneric {
 		if (movingobjectposition.entityHit != null)
 			movingobjectposition.entityHit.addVelocity(-Math.sin(Math.toRadians(player.rotationYaw)) * Math.cos(Math.toRadians(player.rotationPitch)) * 3,
 					(0.5 - Math.sin(Math.toRadians(player.rotationPitch))) * 3, Math.cos(Math.toRadians(player.rotationYaw)) * Math.cos(Math.toRadians(player.rotationPitch)) * 3);
-		else if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
-			for (int x = movingobjectposition.blockX - 1; x < movingobjectposition.blockX + 2; x++)
-				for (int y = movingobjectposition.blockY - 1; y < movingobjectposition.blockY + 2; y++)
-					for (int z = movingobjectposition.blockZ - 1; z < movingobjectposition.blockZ + 2; z++)
-						player.worldObj.setBlockToAir(x, y, z);
+		else if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+			BlockPos loc = movingobjectposition.getBlockPos();
+			for (int x = - 1; x < 2; x++)
+				for (int y = - 1; y < 2; y++)
+					for (int z = - 1; z < + 2; z++)
+						player.worldObj.setBlockToAir(loc.add(x, y, z));
+		}
 		return true;
 	}
 
@@ -55,7 +54,7 @@ public class SkillUnrelentingForce extends SkillGeneric {
 		double d1 = player.prevPosY + (player.posY - player.prevPosY) * f + (player.worldObj.isRemote ? player.getEyeHeight() - player.getDefaultEyeHeight() : player.getEyeHeight());
 		// isRemote check to revert changes to ray trace position due to adding the eye height clientside and player yOffset differences
 		double d2 = player.prevPosZ + (player.posZ - player.prevPosZ) * f;
-		Vec3 vec3 = Vec3.createVectorHelper(d0, d1, d2);
+		Vec3 vec3 = new Vec3(d0, d1, d2);
 		float f3 = MathHelper.cos(-f2 * 0.017453292F - (float) Math.PI);
 		float f4 = MathHelper.sin(-f2 * 0.017453292F - (float) Math.PI);
 		float f5 = -MathHelper.cos(-f1 * 0.017453292F);

@@ -1,21 +1,21 @@
 package skillapi;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.network.FMLEventChannel;
-import cpw.mods.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.FMLEventChannel;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import skillapi.packets.SkillPacketHandler;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Mod(modid = "skillapi", name = "Skill API", useMetadata = true)
+@Mod(modid = "skillapi", name = "Skill API", version = "$version")
 public final class SkillAPI {
 	@SidedProxy(modId = "skillapi", clientSide = "skillapi.client.SkillAPIClientProxy", serverSide = "skillapi.SkillAPIProxy")
 	public static SkillAPIProxy proxy;
@@ -24,10 +24,11 @@ public final class SkillAPI {
     @EventHandler
     public void pre(FMLPreInitializationEvent event){
         channels = new HashMap<String, FMLEventChannel>();
+        Object handler = new SkillPacketHandler();
         FMLEventChannel channel;
         for(int i=0; i<SkillPacketHandler.CHANNELS.length; i++){
             channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(SkillPacketHandler.CHANNELS[i]);
-            channel.register(new SkillPacketHandler());
+            channel.register(handler);
             channels.put(SkillPacketHandler.CHANNELS[i], channel);
         }
         if(event.getSourceFile().getName().endsWith(".jar") && event.getSide().isClient()){

@@ -41,11 +41,11 @@ public class SkillSummonWolf extends SkillGeneric {
 		wolf.spawnExplosionParticle();
 		if (!player.worldObj.isRemote) {
 			wolf.setTamed(true);
-			wolf.setPathToEntity(null);
+			wolf.getNavigator().clearPathEntity();
 			wolf.setAttackTarget(null);
 			wolf.setSitting(false);
 			wolf.setHealth(20);
-			wolf.func_152115_b(player.getUniqueID().toString());
+			wolf.setOwnerId(player.getUniqueID().toString());
 			player.worldObj.setEntityState(wolf, (byte) 7);
 			player.worldObj.spawnEntityInWorld(wolf);
 		}

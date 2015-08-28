@@ -31,7 +31,7 @@ public class SkillSuperJump extends SkillGeneric {
 	public boolean onSkillTrigger(EntityPlayer player) {
 		if (player.handleWaterMovement())
 			player.motionY += 0.42D * 2;
-		else if (player.handleLavaMovement())
+		else if (player.isInLava())
 			player.motionY = 0.42D * 2;
 		else if (player.onGround) {
 			player.motionY = 0.42D * 2;
